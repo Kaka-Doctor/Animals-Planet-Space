@@ -1,0 +1,9 @@
+{
+  "completed": 0,
+  "last_run": null,
+  "last_video": null,
+  "last_post_date": null,
+  "post_log": [],
+  "covered_animals": [],
+  "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes."
+}

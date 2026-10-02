@@ -1,0 +1,127 @@
+name: Daily Animal Documentary Video
+
+on:
+  schedule:
+    # TWICE A DAY — every 12 hours (guarded by agent/main.py's cadence
+    # check: a new episode needs >= 10.5h since the last one):
+    #   06:15 UTC = 09:15 EAT  (morning episode)
+    #   18:15 UTC = 21:15 EAT  (evening episode)
+    # Backup slot: if the evening run fails/delays, 19:45 UTC retries it.
+    #   (the cadence guard makes it a no-op when the evening post is live)
+    # Until YT_REFRESH_TOKEN is set, scheduled runs exit fast without
+    # rendering (no quota wasted) — see the "waiting for OAuth" branch.
+    - cron: "15 6 * * *"
+    - cron: "15 18 * * *"
+    - cron: "45 19 * * *"
+  workflow_dispatch:
+    inputs:
+      no_upload:
+        description: "Dry run — render but do not upload to YouTube"
+        type: boolean
+        default: false
+      force:
+        description: "Bypass the 12-hour cadence guard (post even if an episode went live recently)"
+        type: boolean
+        default: false
+      animal:
+        description: "Override the animal choice (optional, e.g. 'Lion')"
+        type: string
+        default: ""
+
+# The job pushes state.json back to the repo after each successful upload.
+permissions:
+  contents: write
+
+# Never run two generations at once.
+concurrency:
+  group: daily-animal
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    # 90 min: storm-resilience can wait 2 × 15 min between script retries,
+    # plus footage downloads, render and upload time.
+    timeout-minutes: 90
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Ensure FFmpeg
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          fi
+          ffmpeg -version | head -n1
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate this slot's episode
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_PRIVACY: ${{ vars.YT_PRIVACY || 'public' }}
+          VOICE: ${{ vars.VOICE || 'en-US-AndrewNeural' }}
+          TTS_RATE: ${{ vars.TTS_RATE || '+6%' }}
+          TARGET_MINUTES: ${{ vars.TARGET_MINUTES || '5' }}
+          ENABLE_YT_FOOTAGE: ${{ vars.ENABLE_YT_FOOTAGE || '1' }}
+          ENABLE_COMMONS: ${{ vars.ENABLE_COMMONS || '1' }}
+          ENABLE_ARCHIVE: ${{ vars.ENABLE_ARCHIVE || '1' }}
+          MAX_SOURCES: ${{ vars.MAX_SOURCES || '6' }}
+          MAX_SEGMENTS: ${{ vars.MAX_SEGMENTS || '12' }}
+          FORCE_UPLOAD: ${{ (github.event_name == 'workflow_dispatch'
+                        && (inputs.force == true || inputs.force == 'true')) && 'true' || '' }}
+          DRY_RUN: ${{ (github.event_name == 'workflow_dispatch'
+                        && (inputs.no_upload == true || inputs.no_upload == 'true')) && 'true' || '' }}
+          ANIMAL_OVERRIDE: ${{ inputs.animal || '' }}
+          SCRIPT_RETRY_ROUNDS: ${{ vars.SCRIPT_RETRY_ROUNDS || '3' }}
+          STORM_WAIT_SECONDS: ${{ vars.STORM_WAIT_SECONDS || '900' }}
+        run: |
+          if [ -n "$ANIMAL_OVERRIDE" ]; then
+            python -m agent.main --animal "$ANIMAL_OVERRIDE"
+          else
+            python -m agent.main
+          fi
+
+      - name: Save episode as workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-animal-${{ github.run_id }}
+          path: |
+            output/*.mp4
+            output/*_thumb.jpg
+            output/metadata.json
+            output/last_script.json
+            output/qa_report.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Persist state (posted episodes + animal ledger)
+        run: |
+          git config user.name "animals-planet-agent[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          # add each file individually: a single multi-path `git add` fails
+          # ENTIRELY when one pathspec does not exist yet, silently staging
+          # nothing.
+          for f in state.json output/metadata.json; do
+            if [ -f "$f" ]; then git add "$f" 2>/dev/null || true; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No state change to commit."
+          else
+            git commit -m "chore: episode state after run $(date -u +%F-%H%M)"
+            # Another push may have landed after checkout (e.g. a manual
+            # push) — rebase ours on top and retry.
+            git pull --rebase origin main
+            git push
+          fi

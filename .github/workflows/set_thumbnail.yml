@@ -1,0 +1,42 @@
+name: Set Thumbnail
+
+# Manual utility: (re-)apply the custom thumbnail to an uploaded episode.
+# Custom thumbnails require a VERIFIED channel (https://www.youtube.com/verify)
+# — until then YouTube returns 403 and the video keeps an auto frame.
+# Re-run this workflow after verifying the channel.
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_id:
+        description: "Video ID (blank = latest episode in state.json)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  set-thumb:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Apply thumbnail
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          VIDEO_ID: ${{ inputs.video_id }}
+        run: python scripts/set_thumb.py

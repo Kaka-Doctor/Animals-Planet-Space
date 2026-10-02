@@ -1,0 +1,18 @@
+# build artifacts
+output/*
+!output/.gitkeep
+!output/metadata.json
+
+# local secrets — NEVER commit these
+.env
+refresh_token.txt
+*.mp4
+*.mp3
+*.wav
+*.webm
+*.ogv
+
+# python
+__pycache__/
+*.pyc
+.venv/
