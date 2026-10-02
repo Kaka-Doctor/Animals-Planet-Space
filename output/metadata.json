@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-10-02T21:56:17+00:00",
+  "animal": "Cheetah",
+  "region": "Africa",
+  "angle": "hunting and feeding",
+  "title": "CHEETAH: The Ultimate Speed Demon of the African Savanna | Wildlife Documentary",
+  "description": "Witness the explosive power and precision of the cheetah as it stalks the African plains. Join us for a deep dive into the hunting strategies of the world's fastest land animal.\n\nANIMAL: Cheetah \u2014 today's angle: hunting and feeding.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wild\n0:41  Built for the Blur\n1:32  The Art of the Stalk\n2:25  The Explosive Strike\n3:16  ",
+  "tags": [
+    "wildlife",
+    "animals",
+    "nature",
+    "wildlife documentary",
+    "animal documentary",
+    "wild animals",
+    "nature documentary",
+    "Animals Planet Space",
+    "cheetah",
+    "cheetah"
+  ],
+  "footage_sources": [
+    {
+      "provider": "commons",
+      "title": "Rozi the cheetah running at the Cincinnati Zoo.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Rozi_the_cheetah_running_at_the_Cincinnati_Zoo.webm",
+      "license": "Wikimedia Commons (CC0)",
+      "views": 0,
+      "seconds_used": 57.3
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah, Madikwe.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah,_Madikwe.webm",
+      "license": "Wikimedia Commons (CC BY 2.0)",
+      "views": 0,
+      "seconds_used": 19.1
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah family at a kill.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_family_at_a_kill.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 63.5
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah (Acinonyx jubatus) juvenile ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_juvenile_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 10.6
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah (Acinonyx jubatus) male ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_male_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 11.1
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah (Acinonyx jubatus) cub ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_cub_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 6.1
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah (Acinonyx jubatus) crossing the road.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_crossing_the_road.webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 7.0
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah (Acinonyx jubatus) female calling cubs ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_female_calling_cubs_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 15.9
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah (Acinonyx jubatus) male resting in the shade ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_male_resting_in_the_shade_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 18.1
+    },
+    {
+      "provider": "commons",
+      "title": "Cheetah (Acinonyx jubatus) collared female on the road ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_collared_female_on_the_road_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 11.4
+    }
+  ],
+  "video_id": "",
+  "video_url": "",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_02_2154.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_02_2154_thumb.jpg",
+  "duration_seconds": 226.3,
+  "footage_seconds": 220.2,
+  "footage_ratio": 0.973,
+  "script_source": "gemini:gemini-3.1-flash-lite",
+  "script_words": 843,
+  "qa_passed": true,
+  "uploaded": false
+}
