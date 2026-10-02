@@ -39,7 +39,7 @@ class Settings:
     tts_rate: str = "+6%"
     # words per second of narration (edge-tts at this rate averages ~2.3 w/s;
     # 2.1 is the conservative planning figure so narration fits the footage)
-    words_per_second: float = 2.8
+    words_per_second: float = 3.0
     animal_cooldown_days: int = 60     # same animal only re-featured after N days
 
     # --- Posting cadence ---------------------------------------------------
@@ -109,7 +109,7 @@ class Settings:
             max_footage_minutes=float(get("MAX_FOOTAGE_MINUTES", "8.0") or 8.0),
             voice=get("VOICE", "en-US-AndrewNeural"),
             tts_rate=get("TTS_RATE", "+6%"),
-            words_per_second=float(get("WORDS_PER_SECOND", "2.8") or 2.8),
+            words_per_second=float(get("WORDS_PER_SECOND", "3.0") or 3.0),
             animal_cooldown_days=int(get("ANIMAL_COOLDOWN_DAYS", "60") or 60),
             min_hours_between_posts=float(
                 get("MIN_HOURS_BETWEEN_POSTS", "10.5") or 10.5),

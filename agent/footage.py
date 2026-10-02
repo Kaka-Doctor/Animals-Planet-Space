@@ -97,13 +97,15 @@ class FootageSource:
 def _segment_offsets(total: float, seg_len: float,
                      max_segments: int) -> list[float]:
     """Offsets across a source where a FULL segment fits: skip the intro
-    (first 5%), keep a safety margin at the end."""
+    (first 5%), keep a safety margin at the end. The count is how many
+    non-overlapping seg_len blocks fit in the usable span."""
     lo = total * 0.05
-    hi = max(total * 0.97 - seg_len - 0.3, lo)
-    n = max(1, min(max_segments, int((hi - lo) // max(seg_len, 1.0)) or 1))
+    usable_end = total * 0.97 - 0.3
+    span = max(usable_end - lo, 0.0)
+    n = max(1, min(max_segments, int(span // max(seg_len, 1.0)) or 1))
     if n == 1:
         return [lo]
-    step = (hi - lo) / (n - 1)
+    step = (span - seg_len) / (n - 1)
     return [lo + i * step for i in range(n)]
 
 
@@ -198,6 +200,8 @@ def _find_yt_source(topic: EpisodeTopic, settings: Settings,
                       f"{topic.animal} {topic.hints}", topic.animal):
             items = _yt_search(query, settings, duration)
             if not items:
+                log.info("YouTube CC search %r (%s): 0 items",
+                         query, duration)
                 continue
             cands = []
             for item in items:
@@ -216,6 +220,8 @@ def _find_yt_source(topic: EpisodeTopic, settings: Settings,
                 if words and not (words & title_words):
                     continue
                 cands.append((vid, title, snip.get("channelTitle", "")))
+            log.info("YouTube CC search %r (%s): %d items, %d relevant",
+                     query, duration, len(items), len(cands))
             if not cands:
                 continue
             views = _yt_views([c[0] for c in cands], settings)
@@ -506,9 +512,9 @@ def collect_footage(topic: EpisodeTopic, settings: Settings,
         if n_max <= 0:
             break
         usable_end = src.duration * 0.97 - 0.3
-        n_seg = max(1, min(int((usable_end - src.duration * 0.05)
-                               // seg_len) or 1, n_max, 4))
-        for off in _segment_offsets(src.duration, seg_len, n_seg):
+        offsets = _segment_offsets(src.duration, seg_len,
+                                   min(4, n_max))
+        for off in offsets:
             # honest accounting: only time that actually exists past the
             # offset counts (an offset near the end yields almost nothing)
             avail = usable_end - off

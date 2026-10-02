@@ -76,7 +76,7 @@ jobs:
           ENABLE_YT_FOOTAGE: ${{ vars.ENABLE_YT_FOOTAGE || '1' }}
           ENABLE_COMMONS: ${{ vars.ENABLE_COMMONS || '1' }}
           ENABLE_ARCHIVE: ${{ vars.ENABLE_ARCHIVE || '1' }}
-          MAX_SOURCES: ${{ vars.MAX_SOURCES || '6' }}
+          MAX_SOURCES: ${{ vars.MAX_SOURCES || '10' }}
           MAX_SEGMENTS: ${{ vars.MAX_SEGMENTS || '12' }}
           FORCE_UPLOAD: ${{ (github.event_name == 'workflow_dispatch'
                         && (inputs.force == true || inputs.force == 'true')) && 'true' || '' }}

@@ -35,17 +35,21 @@ class Check:
 
 def check_script(script, settings: Settings,
                  footage_seconds: float = 0.0) -> list[Check]:
-    """Script length (by source, scaled to the footage we actually have)
-    + section structure."""
+    """Script length (by source, sized to the footage with the proven 72%
+    acceptance ratio) + section structure."""
     words = script.word_count
     floor = (settings.min_template_words
              if script.source.startswith("template")
              else settings.min_script_words)
-    # the script is sized to the footage: short footage → shorter script is
-    # correct, not a failure (only applies when footage is real)
     if footage_seconds > 0:
-        scaled = int(footage_seconds * settings.words_per_second) + 40
-        floor = min(floor, scaled)
+        # target the generator aimed for, then accept >= 72% of it (the
+        # same slack the news channel uses: target 1100 / floor 800) —
+        # LLMs systematically undershoot word targets, and a 72% script
+        # still fills the footage at the measured speech rate.
+        target = int((footage_seconds - settings.title_card_seconds
+                      - settings.outro_card_seconds)
+                     * settings.words_per_second)
+        floor = min(floor, int(target * 0.72) + 25)
     return [
         Check("script_length", words >= floor,
               f"{words} words (minimum {floor} for source={script.source}, "

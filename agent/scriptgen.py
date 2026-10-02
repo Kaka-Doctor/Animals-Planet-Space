@@ -55,8 +55,9 @@ FOOTAGE LENGTH: about {footage_seconds / 60:.1f} minutes of real video plays
 under your narration (footage first, script second — never describe things
 the camera cannot show).
 
-Write the episode script with {target_words}-{target_words + 200} words of total
-narration. Structure:
+Write the episode script with {target_words}-{target_words + 250} words of total
+narration. CRITICAL LENGTH RULE: NEVER write fewer than {target_words} words —
+if unsure, add another fact section rather than going short. Structure:
 
 1. HOOK — one breath-stopping opener: the most jaw-dropping thing about the
    {topic.animal}, spoken like a movie trailer.
@@ -77,7 +78,7 @@ HARD RULES:
   Never invent numbers, behaviors, or discoveries. When unsure, go
   qualitative — vivid beats precise-but-wrong.
 - LENGTH (critical): total narration between {target_words} and
-  {target_words + 200} words. Rough targets: intro 70-100; each fact
+  {target_words + 250} words. Rough targets: intro 70-100; each fact
   section 120-180; each take 60-100; outro 45-70. At most 10 sections.
 - Tone: energetic wildlife documentary narrator — vivid verbs, present
   tense, wonder and respect for the animal. Think "the fastest thing on
