@@ -14,9 +14,9 @@ slides**, collected legally from three license-clean sources:
 
 | Source | License | Why |
 |---|---|---|
-| YouTube (Creative Commons search) | CC-BY 3.0 | popular videos — search is ordered by view count |
-| Wikimedia Commons | CC0 / CC-BY / CC-BY-SA / PD | huge trove of real wildlife clips |
-| Internet Archive | Public domain / CC | classic wildlife films, long footage |
+| YouTube (Creative Commons search) | CC-BY 3.0 | popular videos — search is ordered by view count. **Note:** YouTube often bot-blocks video downloads from datacenter IPs; when that happens the agent automatically falls through to the sources below (the search starts working fully once `YT_REFRESH_TOKEN` is set and the runner IP is clean). |
+| Wikimedia Commons | CC0 / CC-BY / CC-BY-SA / PD | huge trove of real wildlife clips — the reliable backbone |
+| Internet Archive | Public domain / CC | classic wildlife films, long footage, ranked by downloads |
 
 Every source actually used is **attributed in the video description**
 (title, author, link, license, segments) — that satisfies the CC-BY

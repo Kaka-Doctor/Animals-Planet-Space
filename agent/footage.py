@@ -117,6 +117,8 @@ def _yt_search(query: str, settings: Settings,
                duration: str = "medium") -> list[dict]:
     """CC-licensed YouTube videos for a query, relevance-ranked."""
     if not settings.has_youtube_credentials:
+        log.info("YouTube CC footage: no OAuth token yet — using "
+                 "Commons/Internet Archive (set YT_REFRESH_TOKEN to enable)")
         return []
     try:
         from .youtube import _access_token
