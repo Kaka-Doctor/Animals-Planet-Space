@@ -23,7 +23,7 @@ CLIENT_SECRET = ""
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 SCOPES = ("https://www.googleapis.com/auth/youtube.upload "
           "https://www.googleapis.com/auth/youtube.force-ssl")
-REDIRECT_URI = "http://localhost:8765/"
+REDIRECT_URI = "http://localhost:8765"  # NO trailing slash — must byte-match the OAuth client's registered Authorized Redirect URI
 
 
 def _creds() -> tuple[str, str]:
@@ -46,7 +46,7 @@ def main() -> int:
                     "response_type": "code",
                     "scope": SCOPES,
                     "access_type": "offline",
-                    "prompt": "consent",
+                    "prompt": "consent select_account",
                 }))
     print("\n1. Open this URL in a browser:\n")
     print(auth_url)
