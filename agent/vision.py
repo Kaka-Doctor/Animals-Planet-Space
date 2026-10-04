@@ -74,36 +74,63 @@ def _ask_gemini(image: Path, animal: str, settings: Settings) -> bool | None:
         f"YES or NO."
     )
     models = [settings.gemini_model, *settings.gemini_fallback_models]
+    last_reason = ""
     for model in models[:4]:                     # best-effort, no retries
         try:
-            r = requests.post(
-                GEN_URL.format(model=model),
-                headers={"x-goog-api-key": settings.gemini_api_key,
-                         "Content-Type": "application/json"},
-                json={
-                    "contents": [{"role": "user", "parts": [
-                        {"text": prompt},
-                        {"inline_data": {
-                            "mime_type": "image/jpeg",
-                            "data": img_b64,
-                        }},
-                    ]}],
-                    "generationConfig": {"temperature": 0.0,
-                                         "maxOutputTokens": 8},
+            body: dict = {
+                "contents": [{"role": "user", "parts": [
+                    {"text": prompt},
+                    {"inline_data": {
+                        "mime_type": "image/jpeg",
+                        "data": img_b64,
+                    }},
+                ]}],
+                "generationConfig": {
+                    "temperature": 0.0,
+                    # room for the one-word answer; thinking OFF for speed
+                    "maxOutputTokens": 256,
+                    "thinkingConfig": {"thinkingBudget": 0},
                 },
-                timeout=30,
-            )
+            }
+            for _attempt in range(2):         # retry once without thinking
+                r = requests.post(
+                    GEN_URL.format(model=model),
+                    headers={"x-goog-api-key": settings.gemini_api_key,
+                             "Content-Type": "application/json"},
+                    json=body,
+                    timeout=45,
+                )
+                if r.status_code == 400 and "thinkingConfig" in \
+                        body["generationConfig"]:
+                    body["generationConfig"].pop("thinkingConfig", None)
+                    continue
+                break
             if r.status_code != 200:
+                last_reason = f"{model}: HTTP {r.status_code} {r.text[:120]}"
+                log.debug("VLM %s", last_reason)
                 continue
-            text = (r.json().get("candidates", [{}])[0]
-                    .get("content", {}).get("parts", [{}])[0]
-                    .get("text", "") or "").strip().upper()
-            if "YES" in text.split()[:1] or text.startswith("YES"):
-                return True
-            if "NO" in text.split()[:1] or text.startswith("NO"):
-                return False
-        except (requests.RequestException, ValueError, IndexError, KeyError):
+            cand = r.json().get("candidates", [{}])[0]
+            text = "".join(p.get("text", "")
+                           for p in cand.get("content", {}).get("parts", []))
+            text = text.strip().upper()
+            if not text:
+                last_reason = (f"{model}: empty answer "
+                               f"(finishReason={cand.get('finishReason')})")
+                continue
+            # exact-token YES/NO scan (avoids "NOT" matching "NO")
+            for tok in text.replace(",", " ").replace(".", " ") \
+                    .replace(":", " ").replace(";", " ").split():
+                if tok == "YES":
+                    return True
+                if tok == "NO":
+                    return False
+            last_reason = f"{model}: unparsable answer {text[:60]!r}"
+        except (requests.RequestException, ValueError, IndexError, KeyError) \
+                as exc:
+            last_reason = f"{model}: {exc}"
             continue
+    log.info("VLM api unusable (%s) — falling back to title filter",
+             last_reason[:120])
     return None
 
 
@@ -124,23 +151,27 @@ def frames_show_animal(video: Path, animal: str, settings: Settings,
         probe_points.add(offsets[len(offsets) // 2])
         probe_points.add(offsets[-1])
     saw_yes = False
-    asked = 0
+    answered = 0          # frames that got an explicit YES or NO
     for i, at in enumerate(sorted(probe_points)):
         frame = work / f"vlm_{stamp}_{i}.jpg"
         try:
             if _extract_frame(video, at + 0.8, frame) is None:
                 continue
-            asked += 1
             verdict = _ask_gemini(frame, animal, settings)
+            if verdict is None:
+                continue          # API unusable for this frame
+            answered += 1
+            log.info("VLM %s @%.0fs: %s", video.name[:28], at,
+                     "animal visible" if verdict else "NOT the animal")
             if verdict is True:
                 saw_yes = True
-            if verdict is not None:
-                log.info("VLM %s @%.0fs: %s", video.name[:28], at,
-                         "animal visible" if verdict else "NOT the animal")
         finally:
             frame.unlink(missing_ok=True)
     if saw_yes:
         return True
-    if asked == 0:
-        return None            # frames could not be extracted — accept
+    if answered == 0:
+        # No frame could be verified (extraction or API failure) — the
+        # title filter has already run; rejecting here would burn the
+        # whole slot during any API storm. Accept.
+        return None
     return False
