@@ -42,6 +42,7 @@ def _extract_frame(video: Path, at: float, out: Path) -> Path | None:
              f"scale={FRAME_W}:-2:flags=bilinear", "-q:v", "5",
              str(out)],
             capture_output=True, text=True, timeout=60,
+            stdin=subprocess.DEVNULL,
         )
     except subprocess.TimeoutExpired:
         return None

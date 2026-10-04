@@ -286,7 +286,8 @@ def _yt_download(video_id: str, out_path: Path) -> Path | None:
         f"https://www.youtube.com/watch?v={video_id}",
     ]
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=420)
+        proc = subprocess.run(cmd, capture_output=True, text=True,
+                              timeout=420, stdin=subprocess.DEVNULL)
     except subprocess.TimeoutExpired:
         log.info("yt-dlp timed out on %s", video_id)
         return None
@@ -513,7 +514,7 @@ def _find_archive_source(topic: EpisodeTopic, settings: Settings,
                   f"{topic.animal} {topic.region}"):
         for doc in _archive_search(query):
             ident = doc.get("identifier", "")
-            if not ident or f"archive.org/details/{ident}" in exclude:
+            if not ident or f"https://archive.org/details/{ident}" in exclude:
                 continue
             ok, why = _title_relevant(str(doc.get("title", "")),
                                       topic.animal)

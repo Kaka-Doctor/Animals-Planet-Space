@@ -12,7 +12,8 @@ CONCURRENCY = 3
 
 
 def _run(cmd: list[str]) -> None:
-    proc = subprocess.run(cmd, capture_output=True, text=True)
+    proc = subprocess.run(cmd, capture_output=True, text=True,
+                          stdin=subprocess.DEVNULL)
     if proc.returncode != 0:
         raise RuntimeError(f"ffmpeg failed: {' '.join(cmd)}\n{proc.stderr[-800:]}")
 

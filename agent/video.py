@@ -32,7 +32,9 @@ BG_COLOR = "0x08130D"  # deep forest tone for letterboxing
 
 
 def _run(cmd: list[str], label: str = "ffmpeg") -> str:
-    proc = subprocess.run(cmd, capture_output=True, text=True)
+    # stdin=DEVNULL: ffmpeg must never enter its interactive console
+    proc = subprocess.run(cmd, capture_output=True, text=True,
+                          stdin=subprocess.DEVNULL)
     if proc.returncode != 0:
         raise RuntimeError(
             f"{label} failed ({proc.returncode}):\n{' '.join(cmd[:12])}…\n"
