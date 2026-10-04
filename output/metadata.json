@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-04T07:00:01+00:00",
-  "animal": "Red Panda",
-  "region": "Asia",
-  "angle": "family life",
-  "title": "RED PANDA: The Elusive Master of the Himalayas | Wildlife Documentary",
-  "description": "Witness the secret life of the red panda in the high-altitude forests of Asia. From their unique bamboo diet to the delicate bonds of family, discover how these masters of survival navigate their vertical world.\n\nANIMAL: Red Panda \u2014 today's angle: family life.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wild\n0:46  The High Altitude Home\n1:38  Mastery of the Bamboo ",
+  "generated_at": "2026-10-04T21:38:41+00:00",
+  "animal": "Snowy Owl",
+  "region": "Arctic",
+  "angle": "survival adaptations",
+  "title": "SNOWY OWL: The Ultimate Arctic Survival Master | Wildlife Documentary",
+  "description": "Journey into the harsh Arctic tundra to witness the jaw-dropping survival adaptations of the Snowy Owl. Discover how this iconic raptor hunts in continuous daylight and braves lethal subzero temperatures. Learn what makes this majestic white hunter one of the most resilient birds on Earth.\n\nANIMAL: Snowy Owl \u2014 today's angle: survival adaptations.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAP",
   "tags": [
     "wildlife",
     "animals",
@@ -14,60 +14,36 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "red panda",
-    "panda"
+    "snowy owl",
+    "snowy"
   ],
   "footage_sources": [
     {
-      "provider": "commons",
-      "title": "\u041c\u0430\u043b\u0430\u044f \u043f\u0430\u043d\u0434\u0430 Red panda.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:\u041c\u0430\u043b\u0430\u044f_\u043f\u0430\u043d\u0434\u0430_Red_panda.webm",
-      "license": "Wikimedia Commons (CC BY-SA 4.0)",
-      "views": 0,
-      "seconds_used": 31.8
-    },
-    {
-      "provider": "commons",
-      "title": "Red panda eating bamboo at Symbio Wildlife Park.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Red_panda_eating_bamboo_at_Symbio_Wildlife_Park.webm",
-      "license": "Wikimedia Commons (CC BY 4.0)",
-      "views": 0,
-      "seconds_used": 24.8
-    },
-    {
       "provider": "archive",
-      "title": "Red Panda Makes Debut at Greenville Zoo",
-      "url": "https://archive.org/details/Red_Panda_Makes_Debut_at_Greenville_Zoo",
+      "title": "Snowy Owl Viewing - guidelines for finding & safely observing",
+      "url": "https://archive.org/details/miotmi-Snowy_Owl_Viewing_-_guidelines_for_finding_safely_observing",
       "license": "Internet Archive item (see item page for rights)",
-      "views": 153,
-      "seconds_used": 70.0
+      "views": 75,
+      "seconds_used": 280.0
     },
     {
       "provider": "archive",
-      "title": "National Zoo red panda meets new mate. Interview with Asia Trail Keeper Jenny Sp",
-      "url": "https://archive.org/details/Flickr-3267143540",
-      "license": "CC BY-NC 2.0",
-      "views": 30,
-      "seconds_used": 70.0
-    },
-    {
-      "provider": "archive",
-      "title": "Lao Officials Arrest Red Panda Traffickers | Radio Free Asia (RFA)",
-      "url": "https://archive.org/details/youtube-qbD29_InJJU",
-      "license": "Internet Archive item (see item page for rights)",
-      "views": 22,
-      "seconds_used": 54.9
+      "title": "Snowy Owl Recovering From Crow Attack, Icy Ocean Plunge",
+      "url": "https://archive.org/details/lctvmav-Snowy_Owl_Recovering_From_Crow_Attack_Icy_Ocean_Plunge",
+      "license": "CC BY-NC 3.0",
+      "views": 25,
+      "seconds_used": 32.0
     }
   ],
-  "video_id": "jfnrhjg6_QU",
-  "video_url": "https://youtu.be/jfnrhjg6_QU",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0658.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0658_thumb.jpg",
-  "duration_seconds": 283.8,
-  "footage_seconds": 277.8,
-  "footage_ratio": 0.979,
-  "script_source": "gemini:gemini-3.1-flash-lite",
-  "script_words": 912,
+  "video_id": "4EjI7PVsN3Y",
+  "video_url": "https://youtu.be/4EjI7PVsN3Y",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_2137.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_2137_thumb.jpg",
+  "duration_seconds": 346.3,
+  "footage_seconds": 340.2,
+  "footage_ratio": 0.982,
+  "script_source": "gemini:gemini-3.7-flash",
+  "script_words": 937,
   "qa_passed": true,
   "uploaded": true
 }

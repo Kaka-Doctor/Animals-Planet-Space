@@ -1,11 +1,11 @@
 {
-  "completed": 2,
-  "last_run": "2026-10-04T07:00:01+00:00",
+  "completed": 3,
+  "last_run": "2026-10-04T21:38:41+00:00",
   "last_video": {
-    "id": "jfnrhjg6_QU",
-    "url": "https://youtu.be/jfnrhjg6_QU"
+    "id": "4EjI7PVsN3Y",
+    "url": "https://youtu.be/4EjI7PVsN3Y"
   },
-  "last_post_date": "2026-10-04",
+  "last_post_date": "2026-10-05",
   "post_log": [
     {
       "at": "2026-10-04T03:59:07+00:00",
@@ -16,6 +16,11 @@
       "at": "2026-10-04T07:00:01+00:00",
       "video_id": "jfnrhjg6_QU",
       "url": "https://youtu.be/jfnrhjg6_QU"
+    },
+    {
+      "at": "2026-10-04T21:38:41+00:00",
+      "video_id": "4EjI7PVsN3Y",
+      "url": "https://youtu.be/4EjI7PVsN3Y"
     }
   ],
   "covered_animals": [
@@ -32,6 +37,13 @@
       "angle": "family life",
       "date": "2026-10-04T07:00:01+00:00",
       "video_id": "jfnrhjg6_QU"
+    },
+    {
+      "animal": "Snowy Owl",
+      "region": "Arctic",
+      "angle": "survival adaptations",
+      "date": "2026-10-04T21:38:41+00:00",
+      "video_id": "4EjI7PVsN3Y"
     }
   ],
   "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes."
