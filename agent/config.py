@@ -50,6 +50,7 @@ class Settings:
     enable_yt_footage: bool = True     # YouTube Creative-Commons (CC-BY)
     enable_commons: bool = True        # Wikimedia Commons (CC/PD)
     enable_archive: bool = True        # Internet Archive (PD/CC)
+    enable_vlm_verify: bool = True     # Gemini checks frames show the animal
     max_sources: int = 10              # distinct source videos per episode
     max_segments: int = 12             # extracted segments per episode
     segment_max_seconds: float = 70.0  # per-segment cap (variety)
@@ -116,6 +117,7 @@ class Settings:
             enable_yt_footage=_bool(get("ENABLE_YT_FOOTAGE"), True),
             enable_commons=_bool(get("ENABLE_COMMONS"), True),
             enable_archive=_bool(get("ENABLE_ARCHIVE"), True),
+            enable_vlm_verify=_bool(get("ENABLE_VLM_VERIFY"), True),
             max_sources=int(get("MAX_SOURCES", "10") or 10),
             max_segments=int(get("MAX_SEGMENTS", "12") or 12),
             segment_max_seconds=float(get("SEGMENT_MAX_SECONDS", "70") or 70),

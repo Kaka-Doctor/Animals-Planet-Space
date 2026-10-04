@@ -31,7 +31,7 @@ from pathlib import Path
 
 import requests
 
-from .animals import EpisodeTopic
+from .animals import CATALOG, EpisodeTopic
 from .config import Settings
 from .video import probe_duration
 
@@ -53,11 +53,116 @@ ARCHIVE_SEARCH = "https://archive.org/advancedsearch.php"
 ARCHIVE_META = "https://archive.org/metadata/{id}"
 
 
-def _animal_words(animal: str) -> set[str]:
-    """Distinctive words of the animal name (for relevance checks)."""
-    stop = {"the", "of", "a", "and", "master", "cousins", "dodo", "s"}
-    return {w for w in re.findall(r"[a-z]{3,}", animal.lower())
-            if w not in stop}
+# ---------------------------------------------------------------------------
+# Relevance: the footage must be ABOUT the episode's animal
+# ---------------------------------------------------------------------------
+
+# Light stemming so plurals match ("Leopards of Kruger" must count as
+# "leopard"); tiny irregular map covers the common zoo-animals.
+_IRREGULAR = {"wolves": "wolf", "mice": "mouse", "geese": "goose",
+              "moose": "moose", "fish": "fish", "sheep": "sheep",
+              "deer": "deer", "foxes": "fox", "oxen": "ox"}
+
+
+def _stem(w: str) -> str:
+    w = w.lower()
+    if w in _IRREGULAR:
+        return _IRREGULAR[w]
+    for suf in ("ies", "es", "s"):
+        if w.endswith(suf) and len(w) - len(suf) >= 3:
+            return w[: -len(suf)]
+    return w
+
+
+# Geographic / abundance / coloring qualifiers that are NOT part of an
+# animal's identity for matching purposes ("African Elephant" ~
+# "elephant", "Spotted Hyena" ~ "hyena").
+_QUALIFIERS = {"african", "asiatic", "asian", "indian", "european",
+               "american", "arctic", "antarctic", "bengal", "cape",
+               "nile", "greater", "lesser", "common", "plain", "the",
+               "of", "a", "and", "spotted", "striped", "painted",
+               "crested", "helmeted", "himalayan", "siberian",
+               "sumatran", "californian", "florida", "texas"}
+
+
+def _main_words(animal: str) -> set[str]:
+    """Distinctive stemmed words of an animal name (ALL must appear in a
+    candidate title — multi-word animals match as a whole)."""
+    return {_stem(w) for w in re.findall(r"[a-z]{3,}", animal.lower())
+            if w not in _QUALIFIERS}
+
+
+# Species whose NAMES contain another animal's name — never usable when
+# the topic is that other animal (adjacent-pair check on stemmed tokens).
+_CONFUSERS = {"tortoise", "seal", "shark", "gecko", "frog", "toad",
+              "moth", "butterfly", "eagle", "ray", "snake", "lizard",
+              "cat", "dog", "danio", "cichlid", "wrasse", "puffer",
+              "bass", "trout", "pigeon", "dove", "finch", "parrot",
+              "warbler", "babbler", "octopus", "squid", "crab",
+              "spider", "wasp", "beetle", "mantis", "cricket",
+              "scorpion", "turtle", "viper", "cobra", "snail",
+              "slug", "orchid", "lily", "urchin"}
+
+
+def _catalog_main_words() -> list[tuple[str, set[str]]]:
+    """[(catalog animal name, stemmed main words)] for other-animal scan."""
+    out = []
+    for name, _region, _hints in CATALOG:
+        out.append((name, _main_words(name)))
+    return out
+
+
+_CATALOG_WORDS = _catalog_main_words()
+
+
+def _title_tokens(title: str) -> list[str]:
+    return [_stem(w) for w in re.findall(r"[a-z]{3,}", (title or "").lower())]
+
+
+def _title_relevant(title: str, animal: str) -> tuple[bool, str]:
+    """Strict title gate for footage of THIS animal.
+
+    Rules (all on stemmed tokens):
+    1. every main word of the animal name must appear (multi-word animals
+       match whole — "Snow Leopard" topic needs BOTH words);
+    2. confuser pairs reject differently-named species ("leopard tortoise",
+       "leopard seal", "leopard gecko"...);
+    3. any OTHER catalog animal named in the title (that is not just a
+       subset of this animal's own name) rejects the source — zoo
+       compilations ("Polar Bear - Snow Leopard - African Elephant") and
+       mixed-species reels are exactly what this channel must avoid.
+       Multi-word catalog animals must appear as an ADJACENT phrase, so
+       "Amur leopard in the snow" is NOT misread as "snow leopard".
+    """
+    seq = _title_tokens(title)
+    tokens = set(seq)
+    mine = _main_words(animal)
+    if not mine:
+        return True, ""
+    if not mine <= tokens:
+        missing = ", ".join(sorted(mine - tokens))
+        return False, f"animal words missing ({missing})"
+
+    for i in range(len(seq) - 1):
+        if seq[i] in mine and seq[i + 1] in _CONFUSERS:
+            return False, f"different species ('{seq[i]} {seq[i + 1]}')"
+
+    def _mentions(words: set[str]) -> bool:
+        """Single word: present anywhere. Multi-word: adjacent phrase."""
+        if len(words) == 1:
+            return next(iter(words)) in tokens
+        wl = list(words)
+        n = len(wl)
+        for i in range(len(seq) - n + 1):
+            if set(seq[i:i + n]) == set(wl):
+                return True
+        return False
+
+    for other_name, other_words in _CATALOG_WORDS:
+        if other_words and _mentions(other_words) \
+                and not other_words <= mine:
+            return False, f"mentions other animal ({other_name})"
+    return True, ""
 
 
 @dataclass
@@ -215,11 +320,10 @@ def _find_yt_source(topic: EpisodeTopic, settings: Settings,
                 page = f"https://www.youtube.com/watch?v={vid}"
                 if page in exclude:
                     continue
-                # relevance: the animal's distinctive words must appear in
-                # the title (stops unrelated CC footage sneaking in)
-                words = _animal_words(topic.animal)
-                title_words = set(re.findall(r"[a-z]+", title.lower()))
-                if words and not (words & title_words):
+                # strict relevance: this title must be ABOUT the animal
+                ok, why = _title_relevant(title, topic.animal)
+                if not ok:
+                    log.info("  skip YT %r: %s", title[:44], why)
                     continue
                 cands.append((vid, title, snip.get("channelTitle", "")))
             log.info("YouTube CC search %r (%s): %d items, %d relevant",
@@ -312,9 +416,16 @@ def _url_ext(url: str, default: str = ".webm") -> str:
 def _find_commons_source(topic: EpisodeTopic, settings: Settings,
                          work_dir: Path,
                          exclude: set[str]) -> FootageSource | None:
-    for query in (f"{topic.animal}", f"{topic.hints}",
-                  f"{topic.animal} behavior", f"{topic.animal} zoo",
-                  "wildlife animals nature"):
+    # Animal-specific queries ONLY. There is deliberately NO generic
+    # "wildlife" fallback: an episode about Leopards must contain leopards,
+    # not whatever the generic search drags in (camels, goats, geese).
+    # A thin but on-topic result set is corrected by the script sizing
+    # itself to the footage we actually found.
+    for query in (f"{topic.animal}", f"{topic.animal} {topic.hints}",
+                  f"{topic.animal} hunting", f"{topic.animal} behavior",
+                  f"{topic.animal} {topic.region}",
+                  f"{topic.animal} national park", f"{topic.animal} zoo",
+                  f"{topic.animal} cubs"):
         for cand in _commons_search(query):
             url = cand["url"]
             if not url or cand["page"] in exclude:
@@ -324,13 +435,11 @@ def _find_commons_source(topic: EpisodeTopic, settings: Settings,
                 continue
             if cand["size"] > MAX_DOWNLOAD_MB * 1e6:
                 continue
-            # relevance (except for the generic wildlife fallback query)
-            if not query.startswith("wildlife"):
-                words = _animal_words(topic.animal)
-                title_words = set(re.findall(r"[a-z]+",
-                                             cand["title"].lower()))
-                if words and not (words & title_words):
-                    continue
+            # strict relevance for every query (no exceptions)
+            ok, why = _title_relevant(cand["title"], topic.animal)
+            if not ok:
+                log.info("  skip Commons %r: %s", cand["title"][:44], why)
+                continue
             ext = _url_ext(url)
             out_path = work_dir / f"commons_{abs(hash(url)) % 10_000:04d}{ext}"
             if not out_path.exists():
@@ -398,18 +507,20 @@ def _license_from_url(url: str) -> str:
 def _find_archive_source(topic: EpisodeTopic, settings: Settings,
                          work_dir: Path,
                          exclude: set[str]) -> FootageSource | None:
+    # animal-specific queries ONLY — see note in _find_commons_source
     for query in (f"{topic.animal} wildlife", f"{topic.animal} animals",
-                  f"{topic.hints} animals", "wildlife animals nature"):
+                  f"{topic.animal} {topic.hints}", f"{topic.animal} film",
+                  f"{topic.animal} {topic.region}"):
         for doc in _archive_search(query):
             ident = doc.get("identifier", "")
             if not ident or f"archive.org/details/{ident}" in exclude:
                 continue
-            if not query.startswith("wildlife"):
-                words = _animal_words(topic.animal)
-                title_words = set(re.findall(r"[a-z]+",
-                                             str(doc.get("title", "")).lower()))
-                if words and not (words & title_words):
-                    continue
+            ok, why = _title_relevant(str(doc.get("title", "")),
+                                      topic.animal)
+            if not ok:
+                log.info("  skip Archive %r: %s",
+                         str(doc.get("title", ""))[:44], why)
+                continue
             try:
                 meta = requests.get(ARCHIVE_META.format(id=ident),
                                     headers={"User-Agent": UA},
@@ -516,6 +627,22 @@ def collect_footage(topic: EpisodeTopic, settings: Settings,
         usable_end = src.duration * 0.97 - 0.3
         offsets = _segment_offsets(src.duration, seg_len,
                                    min(4, n_max))
+
+        # VLM verification: the animal must actually APPEAR in the frames
+        # we are about to cut. Title filters catch most mismatches; this
+        # catches the rest (zoo compilations, misfiled videos). None =
+        # vision API unavailable → accept (title filter already ran).
+        if settings.enable_vlm_verify and settings.gemini_api_key:
+            from . import vision
+            verdict = vision.frames_show_animal(
+                src.path, topic.animal, settings, offsets)
+            if verdict is False:
+                log.info("VLM REJECT %r: %s not visible at planned cuts — "
+                         "dropping this source", src.title[:48],
+                         topic.animal)
+                src.path.unlink(missing_ok=True)
+                continue        # keep hunting; url already excluded
+
         for off in offsets:
             # honest accounting: only time that actually exists past the
             # offset counts (an offset near the end yields almost nothing)
