@@ -104,6 +104,20 @@ _CONFUSERS = {"tortoise", "seal", "shark", "gecko", "frog", "toad",
               "slug", "orchid", "lily", "urchin"}
 
 
+# Machines named after animals (Yakovlev "Yak-130" jets, "Leopard 2A7"
+# tanks, "Tiger Moth" planes...) — never real footage of the animal.
+# Either a vehicle keyword anywhere, or the "<animal>-<number>" vehicle
+# naming pattern, rejects the source. Words like "flight"/"takeoff"/
+# "tank" are deliberately NOT here — they appear in real bird/aquarium
+# footage titles ("eagle in flight", "fish tank").
+_MACHINE_WORDS = {"aircraft", "airplane", "aeroplane", "flugzeug",
+                  "avion", "airliner", "jet", "fighter", "bomber",
+                  "helicopter", "heli", "panzer", "missile",
+                  "rocket", "locomotive", "tramway", "airbase", "squadron",
+                  "aerobatics", "starvorgang", "yakovlev", "airshow",
+                  "taxiing", "luftwaffe", "wehrmacht", "kampfjet"}
+
+
 def _catalog_main_words() -> list[tuple[str, set[str]]]:
     """[(catalog animal name, stemmed main words)] for other-animal scan."""
     out = []
@@ -144,8 +158,18 @@ def _title_relevant(title: str, animal: str) -> tuple[bool, str]:
         return False, f"animal words missing ({missing})"
 
     for i in range(len(seq) - 1):
-        if seq[i] in mine and seq[i + 1] in _CONFUSERS:
+        # confuser pair — but never when the pair is part of the animal's
+        # OWN name ("golden eagle" for topic Golden Eagle must pass)
+        if seq[i] in mine and seq[i + 1] in _CONFUSERS \
+                and seq[i + 1] not in mine:
             return False, f"different species ('{seq[i]} {seq[i + 1]}')"
+
+    # machines named after animals: "Yak-130", "Leopard 2 tank"...
+    if tokens & _MACHINE_WORDS:
+        return False, "machine named after the animal"
+    for w in mine:
+        if re.search(rf"\b{re.escape(w)}[- ]?\d", title.lower()):
+            return False, f"numbered vehicle name ('{w}-<number>')"
 
     def _mentions(words: set[str]) -> bool:
         """Single word: present anywhere. Multi-word: adjacent phrase."""

@@ -166,30 +166,50 @@ def main(argv: list[str] | None = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     rng = random.Random()
 
-    # 2. Pick the animal + angle --------------------------------------------
-    if args.animal:
-        topic = animals_mod.EpisodeTopic(
-            animal=args.animal, hints=args.animal, region="custom",
-            angle_title=animals_mod.ANGLES[0][0],
-            angle_brief=animals_mod.ANGLES[0][1])
-    else:
-        topic = animals_mod.pick_topic(st, settings, rng=rng)
-
-    # 3. Collect REAL footage (the visual track — no static slides) ---------
-    needed = settings.target_minutes * 60.0
-    sources = footage_mod.collect_footage(topic, settings,
-                                          out_dir / "footage", needed)
-    footage_total = sum(s.used_seconds for s in sources)
-    if footage_total < settings.min_footage_minutes * 60:
-        log.error("FOOTAGE GATE: only %.0fs of real footage found for %s "
-                  "(minimum %.0fs). Trying a different animal next slot.",
+    # 2+3. Pick the animal and hunt REAL footage — with RETRIES. The strict
+    # relevance gate can come up dry for an obscure animal (every candidate
+    # was off-topic or a machine named after it); a slot never dies for one
+    # animal's sake: the next animal is tried immediately (up to
+    # ANIMAL_ATTEMPTS). Only a fully dry hunt exhausts the run.
+    topic = None
+    sources: list = []
+    footage_total = 0.0
+    attempted: list[str] = []
+    for attempt in range(1, settings.animal_attempts + 1):
+        if args.animal:
+            if attempt > 1:
+                break          # explicit --animal: single attempt only
+            topic = animals_mod.EpisodeTopic(
+                animal=args.animal, hints=args.animal, region="custom",
+                angle_title=animals_mod.ANGLES[0][0],
+                angle_brief=animals_mod.ANGLES[0][1])
+        else:
+            topic = animals_mod.pick_topic(st, settings, rng=rng,
+                                           exclude=set(attempted))
+        attempted.append(topic.animal.lower())
+        needed = settings.target_minutes * 60.0
+        sources = footage_mod.collect_footage(topic, settings,
+                                              out_dir / "footage", needed)
+        footage_total = sum(s.used_seconds for s in sources)
+        if footage_total >= settings.min_footage_minutes * 60:
+            break
+        log.error("FOOTAGE GATE: only %.0fs of clean footage found for %s "
+                  "(minimum %.0fs) — %s a different animal.",
                   footage_total, topic.animal,
-                  settings.min_footage_minutes * 60)
+                  settings.min_footage_minutes * 60,
+                  "trying" if attempt < settings.animal_attempts
+                  else "no attempts left")
+
+    if footage_total < settings.min_footage_minutes * 60:
+        log.error("No animal produced enough clean footage this run "
+                  "(tried: %s). The next scheduled slot retries.",
+                  ", ".join(attempted))
         qa.write_report(out_dir / "qa_report.json", [
             qa.Check("footage_supply", False,
                      f"{footage_total:.0f}s found (minimum "
-                     f"{settings.min_footage_minutes * 60:.0f}s)")],
-            stage="footage", animal=topic.animal)
+                     f"{settings.min_footage_minutes * 60:.0f}s); tried: "
+                     f"{', '.join(attempted)}")],
+            stage="footage", animal=", ".join(attempted))
         return 1
 
     # 4. Script sized to the footage -----------------------------------------

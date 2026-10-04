@@ -234,15 +234,18 @@ def _recent_regions(data: dict, take: int = 3) -> list[str]:
 
 
 def pick_topic(data: dict, settings: Settings,
-               rng: random.Random | None = None) -> EpisodeTopic:
+               rng: random.Random | None = None,
+               exclude: set[str] | None = None) -> EpisodeTopic:
     """Choose (animal, angle) for this episode.
 
     Priority: never-covered animals first, rotating the world regions; when
     everything is on cooldown, the least-recently-featured animal returns
-    with a FRESH angle.
+    with a FRESH angle. `exclude` (lowercase names) lets a single run skip
+    animals whose footage hunt already came up dry this slot.
     """
     rng = rng or random.Random()
     covered = _covered_names(data, settings.animal_cooldown_days)
+    skip = covered | {x.lower() for x in (exclude or set())}
 
     # rotate regions: skip the regions of the last episodes
     recent = set(_recent_regions(data))
@@ -251,19 +254,22 @@ def pick_topic(data: dict, settings: Settings,
 
     for region in region_cycle:
         pool = [(n, h) for (n, reg, h) in CATALOG
-                if reg == region and n.lower() not in covered]
+                if reg == region and n.lower() not in skip]
         if pool:
             name, hints = rng.choice(pool)
             idx = next(i for i, (n, _, _) in enumerate(CATALOG)
                        if n == name)
             break
     else:
-        # everything covered → least-recently-featured animal, fresh angle
+        # everything covered (or excluded) → least-recently-featured animal
+        # that is not in `skip`, fresh angle
         ledger = {e.get("animal", "").lower(): e
                   for e in data.get("covered_animals", [])}
         order = sorted(
-            CATALOG,
+            (t for t in CATALOG if t[0].lower() not in skip),
             key=lambda t: str(ledger.get(t[0].lower(), {}).get("date", "0000")))
+        if not order:
+            order = CATALOG          # nothing left — serve any animal
         name, reg, hints = order[0]
         idx = next(i for i, (n, _, _) in enumerate(CATALOG) if n == name)
 
