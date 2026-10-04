@@ -61,7 +61,11 @@ ARCHIVE_META = "https://archive.org/metadata/{id}"
 # "leopard"); tiny irregular map covers the common zoo-animals.
 _IRREGULAR = {"wolves": "wolf", "mice": "mouse", "geese": "goose",
               "moose": "moose", "fish": "fish", "sheep": "sheep",
-              "deer": "deer", "foxes": "fox", "oxen": "ox"}
+              "deer": "deer", "foxes": "fox", "oxen": "ox",
+              "tigress": "tiger", "tigresses": "tiger",
+              "lioness": "lion", "lionesses": "lion",
+              "leopardess": "leopard", "leopardesses": "leopard",
+              "cubs": "cub"}
 
 
 def _stem(w: str) -> str:

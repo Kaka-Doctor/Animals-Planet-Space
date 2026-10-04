@@ -62,12 +62,16 @@ def _ask_gemini(image: Path, animal: str, settings: Settings) -> bool | None:
         return None
     prompt = (
         f"You are verifying wildlife footage for a documentary about the "
-        f"animal \"{animal}\". Look at this video frame. Does it clearly "
-        f"show that exact kind of animal (the species \"{animal}\")? A "
-        f"DIFFERENT species — even one whose name contains the word "
-        f"\"{animal.split()[-1]}\" (for example a different animal entirely), "
-        f"or any other unrelated animal — means NO. Answer with exactly one "
-        f"word: YES or NO."
+        f"animal \"{animal}\". Look at this video frame. Is an animal of "
+        f"this kind clearly visible in the frame? Answer YES for: the "
+        f"species itself, its subspecies and color variants (for example a "
+        f"white tiger counts for a Bengal Tiger topic, a generic tiger "
+        f"counts too), and the same kind of animal at any age (cub, juvenile "
+        f"or adult). Answer NO for: a completely different kind of animal, "
+        f"a machine or vehicle, a shot of only people or scenery, or an "
+        f"empty/black frame. When the animal is partly hidden or distant "
+        f"but recognizable, answer YES. Answer with exactly one word: "
+        f"YES or NO."
     )
     models = [settings.gemini_model, *settings.gemini_fallback_models]
     for model in models[:4]:                     # best-effort, no retries
@@ -107,20 +111,21 @@ def frames_show_animal(video: Path, animal: str, settings: Settings,
                        offsets: list[float]) -> bool | None:
     """Verify the animal appears at the offsets we plan to cut from.
 
-    Samples up to 2 frames: the first planned offset and the midpoint of
-    the planned span. Any YES accepts the source; all NO rejects; API
-    unavailable returns None (accept — title filter already ran).
+    Samples up to 3 frames: first offset, middle and last of the planned
+    span. Any YES accepts the source; all NO rejects; API unavailable
+    returns None (accept — the title filter already ran).
     """
     if not offsets:
         return None
     work = video.parent
     stamp = video.stem
-    probe_points = [offsets[0]]
+    probe_points = {offsets[0]}
     if len(offsets) > 1:
-        probe_points.append(offsets[len(offsets) // 2])
+        probe_points.add(offsets[len(offsets) // 2])
+        probe_points.add(offsets[-1])
     saw_yes = False
     asked = 0
-    for i, at in enumerate(probe_points):
+    for i, at in enumerate(sorted(probe_points)):
         frame = work / f"vlm_{stamp}_{i}.jpg"
         try:
             if _extract_frame(video, at + 0.8, frame) is None:
