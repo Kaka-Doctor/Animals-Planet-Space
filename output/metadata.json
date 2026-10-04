@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-04T03:59:07+00:00",
-  "animal": "Leopard",
-  "region": "Africa",
-  "angle": "hunting and feeding",
-  "title": "LEOPARD: Ultimate Tree Hunting Predator | Wildlife Documentary",
-  "description": "Witness the breathtaking agility and strength of the leopard in real documentary footage from Africa. Learn how this silent cat stalks prey and hauls massive kills high into the trees. Discover the ultimate hunting strategies of nature's most elusive apex predator.\n\nANIMAL: Leopard \u2014 today's angle: hunting and feeding.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wi",
+  "generated_at": "2026-10-04T07:00:01+00:00",
+  "animal": "Red Panda",
+  "region": "Asia",
+  "angle": "family life",
+  "title": "RED PANDA: The Elusive Master of the Himalayas | Wildlife Documentary",
+  "description": "Witness the secret life of the red panda in the high-altitude forests of Asia. From their unique bamboo diet to the delicate bonds of family, discover how these masters of survival navigate their vertical world.\n\nANIMAL: Red Panda \u2014 today's angle: family life.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wild\n0:46  The High Altitude Home\n1:38  Mastery of the Bamboo ",
   "tags": [
     "wildlife",
     "animals",
@@ -14,84 +14,60 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "leopard",
-    "leopard"
+    "red panda",
+    "panda"
   ],
   "footage_sources": [
     {
       "provider": "commons",
-      "title": "Leopard (Panthera pardus), in Uttarakhand, India.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus),_in_Uttarakhand,_India.webm",
+      "title": "\u041c\u0430\u043b\u0430\u044f \u043f\u0430\u043d\u0434\u0430 Red panda.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:\u041c\u0430\u043b\u0430\u044f_\u043f\u0430\u043d\u0434\u0430_Red_panda.webm",
       "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 13.9
+      "seconds_used": 31.8
     },
     {
       "provider": "commons",
-      "title": "Leopard (Panthera pardus) male ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_male_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "title": "Red panda eating bamboo at Symbio Wildlife Park.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Red_panda_eating_bamboo_at_Symbio_Wildlife_Park.webm",
+      "license": "Wikimedia Commons (CC BY 4.0)",
       "views": 0,
-      "seconds_used": 10.2
+      "seconds_used": 24.8
     },
     {
-      "provider": "commons",
-      "title": "Leopard (Panthera pardus) female resting in a tree ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_female_resting_in_a_tree_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 7.5
-    },
-    {
-      "provider": "commons",
-      "title": "Female leopard (Panthera pardus) with two cubs.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Female_leopard_(Panthera_pardus)_with_two_cubs.webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 27.6
-    },
-    {
-      "provider": "commons",
-      "title": "Leopard (Panthera pardus) with its kill in Masai Mara.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_with_its_kill_in_Masai_Mara.webm",
-      "license": "Wikimedia Commons (CC BY 2.0)",
-      "views": 0,
-      "seconds_used": 9.6
-    },
-    {
-      "provider": "commons",
-      "title": "Day 40 - Leopard (Panthera pardus) male licking its fur, after killing a warthog ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Day_40_-_Leopard_(Panthera_pardus)_male_licking_its_fur,_after_killing_a_warthog_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 11.5
-    },
-    {
-      "provider": "commons",
-      "title": "Snow leopard family, Spiti, Himachal Pradesh, India.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Snow_leopard_family,_Spiti,_Himachal_Pradesh,_India.webm",
-      "license": "Wikimedia Commons (CC BY 3.0)",
-      "views": 0,
+      "provider": "archive",
+      "title": "Red Panda Makes Debut at Greenville Zoo",
+      "url": "https://archive.org/details/Red_Panda_Makes_Debut_at_Greenville_Zoo",
+      "license": "Internet Archive item (see item page for rights)",
+      "views": 153,
       "seconds_used": 70.0
     },
     {
-      "provider": "commons",
-      "title": "Tallinn ZOO - Polar Bear - Snow Leopard - African Elephant.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Tallinn_ZOO_-_Polar_Bear_-_Snow_Leopard_-_African_Elephant.webm",
-      "license": "Wikimedia Commons (CC BY 3.0)",
-      "views": 0,
-      "seconds_used": 153.7
+      "provider": "archive",
+      "title": "National Zoo red panda meets new mate. Interview with Asia Trail Keeper Jenny Sp",
+      "url": "https://archive.org/details/Flickr-3267143540",
+      "license": "CC BY-NC 2.0",
+      "views": 30,
+      "seconds_used": 70.0
+    },
+    {
+      "provider": "archive",
+      "title": "Lao Officials Arrest Red Panda Traffickers | Radio Free Asia (RFA)",
+      "url": "https://archive.org/details/youtube-qbD29_InJJU",
+      "license": "Internet Archive item (see item page for rights)",
+      "views": 22,
+      "seconds_used": 54.9
     }
   ],
-  "video_id": "Op9mEBUbB34",
-  "video_url": "https://youtu.be/Op9mEBUbB34",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0357.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0357_thumb.jpg",
-  "duration_seconds": 339.3,
-  "footage_seconds": 333.2,
-  "footage_ratio": 0.982,
-  "script_source": "gemini:gemini-3.6-flash",
-  "script_words": 931,
+  "video_id": "jfnrhjg6_QU",
+  "video_url": "https://youtu.be/jfnrhjg6_QU",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0658.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0658_thumb.jpg",
+  "duration_seconds": 283.8,
+  "footage_seconds": 277.8,
+  "footage_ratio": 0.979,
+  "script_source": "gemini:gemini-3.1-flash-lite",
+  "script_words": 912,
   "qa_passed": true,
   "uploaded": true
 }

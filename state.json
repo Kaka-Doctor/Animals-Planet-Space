@@ -1,9 +1,9 @@
 {
-  "completed": 1,
-  "last_run": "2026-10-04T03:59:07+00:00",
+  "completed": 2,
+  "last_run": "2026-10-04T07:00:01+00:00",
   "last_video": {
-    "id": "Op9mEBUbB34",
-    "url": "https://youtu.be/Op9mEBUbB34"
+    "id": "jfnrhjg6_QU",
+    "url": "https://youtu.be/jfnrhjg6_QU"
   },
   "last_post_date": "2026-10-04",
   "post_log": [
@@ -11,6 +11,11 @@
       "at": "2026-10-04T03:59:07+00:00",
       "video_id": "Op9mEBUbB34",
       "url": "https://youtu.be/Op9mEBUbB34"
+    },
+    {
+      "at": "2026-10-04T07:00:01+00:00",
+      "video_id": "jfnrhjg6_QU",
+      "url": "https://youtu.be/jfnrhjg6_QU"
     }
   ],
   "covered_animals": [
@@ -20,6 +25,13 @@
       "angle": "hunting and feeding",
       "date": "2026-10-04T03:59:07+00:00",
       "video_id": "Op9mEBUbB34"
+    },
+    {
+      "animal": "Red Panda",
+      "region": "Asia",
+      "angle": "family life",
+      "date": "2026-10-04T07:00:01+00:00",
+      "video_id": "jfnrhjg6_QU"
     }
   ],
   "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes."
