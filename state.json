@@ -1,9 +1,26 @@
 {
-  "completed": 0,
-  "last_run": null,
-  "last_video": null,
-  "last_post_date": null,
-  "post_log": [],
-  "covered_animals": [],
+  "completed": 1,
+  "last_run": "2026-10-04T03:59:07+00:00",
+  "last_video": {
+    "id": "Op9mEBUbB34",
+    "url": "https://youtu.be/Op9mEBUbB34"
+  },
+  "last_post_date": "2026-10-04",
+  "post_log": [
+    {
+      "at": "2026-10-04T03:59:07+00:00",
+      "video_id": "Op9mEBUbB34",
+      "url": "https://youtu.be/Op9mEBUbB34"
+    }
+  ],
+  "covered_animals": [
+    {
+      "animal": "Leopard",
+      "region": "Africa",
+      "angle": "hunting and feeding",
+      "date": "2026-10-04T03:59:07+00:00",
+      "video_id": "Op9mEBUbB34"
+    }
+  ],
   "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes."
 }

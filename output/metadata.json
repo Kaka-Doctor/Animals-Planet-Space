@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-02T21:56:17+00:00",
-  "animal": "Cheetah",
+  "generated_at": "2026-10-04T03:59:07+00:00",
+  "animal": "Leopard",
   "region": "Africa",
   "angle": "hunting and feeding",
-  "title": "CHEETAH: The Ultimate Speed Demon of the African Savanna | Wildlife Documentary",
-  "description": "Witness the explosive power and precision of the cheetah as it stalks the African plains. Join us for a deep dive into the hunting strategies of the world's fastest land animal.\n\nANIMAL: Cheetah \u2014 today's angle: hunting and feeding.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wild\n0:41  Built for the Blur\n1:32  The Art of the Stalk\n2:25  The Explosive Strike\n3:16  ",
+  "title": "LEOPARD: Ultimate Tree Hunting Predator | Wildlife Documentary",
+  "description": "Witness the breathtaking agility and strength of the leopard in real documentary footage from Africa. Learn how this silent cat stalks prey and hauls massive kills high into the trees. Discover the ultimate hunting strategies of nature's most elusive apex predator.\n\nANIMAL: Leopard \u2014 today's angle: hunting and feeding.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wi",
   "tags": [
     "wildlife",
     "animals",
@@ -14,100 +14,84 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "cheetah",
-    "cheetah"
+    "leopard",
+    "leopard"
   ],
   "footage_sources": [
     {
       "provider": "commons",
-      "title": "Rozi the cheetah running at the Cincinnati Zoo.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Rozi_the_cheetah_running_at_the_Cincinnati_Zoo.webm",
-      "license": "Wikimedia Commons (CC0)",
+      "title": "Leopard (Panthera pardus), in Uttarakhand, India.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus),_in_Uttarakhand,_India.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 57.3
+      "seconds_used": 13.9
     },
     {
       "provider": "commons",
-      "title": "Cheetah, Madikwe.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah,_Madikwe.webm",
+      "title": "Leopard (Panthera pardus) male ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_male_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 10.2
+    },
+    {
+      "provider": "commons",
+      "title": "Leopard (Panthera pardus) female resting in a tree ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_female_resting_in_a_tree_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 7.5
+    },
+    {
+      "provider": "commons",
+      "title": "Female leopard (Panthera pardus) with two cubs.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Female_leopard_(Panthera_pardus)_with_two_cubs.webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 27.6
+    },
+    {
+      "provider": "commons",
+      "title": "Leopard (Panthera pardus) with its kill in Masai Mara.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_with_its_kill_in_Masai_Mara.webm",
       "license": "Wikimedia Commons (CC BY 2.0)",
       "views": 0,
-      "seconds_used": 19.1
+      "seconds_used": 9.6
     },
     {
       "provider": "commons",
-      "title": "Cheetah family at a kill.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_family_at_a_kill.webm",
+      "title": "Day 40 - Leopard (Panthera pardus) male licking its fur, after killing a warthog ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Day_40_-_Leopard_(Panthera_pardus)_male_licking_its_fur,_after_killing_a_warthog_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 11.5
+    },
+    {
+      "provider": "commons",
+      "title": "Snow leopard family, Spiti, Himachal Pradesh, India.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Snow_leopard_family,_Spiti,_Himachal_Pradesh,_India.webm",
       "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
-      "seconds_used": 63.5
+      "seconds_used": 70.0
     },
     {
       "provider": "commons",
-      "title": "Cheetah (Acinonyx jubatus) juvenile ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_juvenile_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "title": "Tallinn ZOO - Polar Bear - Snow Leopard - African Elephant.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Tallinn_ZOO_-_Polar_Bear_-_Snow_Leopard_-_African_Elephant.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
-      "seconds_used": 10.6
-    },
-    {
-      "provider": "commons",
-      "title": "Cheetah (Acinonyx jubatus) male ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_male_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 11.1
-    },
-    {
-      "provider": "commons",
-      "title": "Cheetah (Acinonyx jubatus) cub ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_cub_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 6.1
-    },
-    {
-      "provider": "commons",
-      "title": "Cheetah (Acinonyx jubatus) crossing the road.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_crossing_the_road.webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 7.0
-    },
-    {
-      "provider": "commons",
-      "title": "Cheetah (Acinonyx jubatus) female calling cubs ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_female_calling_cubs_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 15.9
-    },
-    {
-      "provider": "commons",
-      "title": "Cheetah (Acinonyx jubatus) male resting in the shade ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_male_resting_in_the_shade_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 18.1
-    },
-    {
-      "provider": "commons",
-      "title": "Cheetah (Acinonyx jubatus) collared female on the road ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Cheetah_(Acinonyx_jubatus)_collared_female_on_the_road_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 11.4
+      "seconds_used": 153.7
     }
   ],
-  "video_id": "",
-  "video_url": "",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_02_2154.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_02_2154_thumb.jpg",
-  "duration_seconds": 226.3,
-  "footage_seconds": 220.2,
-  "footage_ratio": 0.973,
-  "script_source": "gemini:gemini-3.1-flash-lite",
-  "script_words": 843,
+  "video_id": "Op9mEBUbB34",
+  "video_url": "https://youtu.be/Op9mEBUbB34",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0357.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_0357_thumb.jpg",
+  "duration_seconds": 339.3,
+  "footage_seconds": 333.2,
+  "footage_ratio": 0.982,
+  "script_source": "gemini:gemini-3.6-flash",
+  "script_words": 931,
   "qa_passed": true,
-  "uploaded": false
+  "uploaded": true
 }
