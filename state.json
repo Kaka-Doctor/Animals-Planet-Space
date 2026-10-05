@@ -1,9 +1,9 @@
 {
-  "completed": 3,
-  "last_run": "2026-10-04T21:38:41+00:00",
+  "completed": 4,
+  "last_run": "2026-10-05T15:00:08+00:00",
   "last_video": {
-    "id": "4EjI7PVsN3Y",
-    "url": "https://youtu.be/4EjI7PVsN3Y"
+    "id": "6SbfV4k6tLA",
+    "url": "https://youtu.be/6SbfV4k6tLA"
   },
   "last_post_date": "2026-10-05",
   "post_log": [
@@ -21,6 +21,11 @@
       "at": "2026-10-04T21:38:41+00:00",
       "video_id": "4EjI7PVsN3Y",
       "url": "https://youtu.be/4EjI7PVsN3Y"
+    },
+    {
+      "at": "2026-10-05T15:00:08+00:00",
+      "video_id": "6SbfV4k6tLA",
+      "url": "https://youtu.be/6SbfV4k6tLA"
     }
   ],
   "covered_animals": [
@@ -44,6 +49,13 @@
       "angle": "survival adaptations",
       "date": "2026-10-04T21:38:41+00:00",
       "video_id": "4EjI7PVsN3Y"
+    },
+    {
+      "animal": "Moray Eel",
+      "region": "Ocean",
+      "angle": "habitat and territory",
+      "date": "2026-10-05T15:00:08+00:00",
+      "video_id": "6SbfV4k6tLA"
     }
   ],
   "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes."

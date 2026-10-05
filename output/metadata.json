@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-04T21:38:41+00:00",
-  "animal": "Snowy Owl",
-  "region": "Arctic",
-  "angle": "survival adaptations",
-  "title": "SNOWY OWL: The Ultimate Arctic Survival Master | Wildlife Documentary",
-  "description": "Journey into the harsh Arctic tundra to witness the jaw-dropping survival adaptations of the Snowy Owl. Discover how this iconic raptor hunts in continuous daylight and braves lethal subzero temperatures. Learn what makes this majestic white hunter one of the most resilient birds on Earth.\n\nANIMAL: Snowy Owl \u2014 today's angle: survival adaptations.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAP",
+  "generated_at": "2026-10-05T15:00:08+00:00",
+  "animal": "Moray Eel",
+  "region": "Ocean",
+  "angle": "habitat and territory",
+  "title": "MORAY EEL: The Secret Ruler of the Coral Crevice | Wildlife Documentary",
+  "description": "Discover how the moray eel dominates its underwater territory. From its hidden rocky fortress to its terrifying second set of jaws, witness the ultimate ambush predator of the coral reef.\n\nANIMAL: Moray Eel \u2014 today's angle: habitat and territory.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Shadows in the Reef\n0:45  The Perfect Fortress\n1:21  The Rhythm of the Hunt\n1:58  The Alien",
   "tags": [
     "wildlife",
     "animals",
@@ -14,36 +14,84 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "snowy owl",
-    "snowy"
+    "moray eel",
+    "moray"
   ],
   "footage_sources": [
     {
-      "provider": "archive",
-      "title": "Snowy Owl Viewing - guidelines for finding & safely observing",
-      "url": "https://archive.org/details/miotmi-Snowy_Owl_Viewing_-_guidelines_for_finding_safely_observing",
-      "license": "Internet Archive item (see item page for rights)",
-      "views": 75,
-      "seconds_used": 280.0
+      "provider": "commons",
+      "title": "Gymnothorax isingteena - spotted moray eel - aug 29 2016.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Gymnothorax_isingteena_-_spotted_moray_eel_-_aug_29_2016.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
+      "views": 0,
+      "seconds_used": 18.9
+    },
+    {
+      "provider": "commons",
+      "title": "Moray eel in the Maldives.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Moray_eel_in_the_Maldives.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 27.2
+    },
+    {
+      "provider": "commons",
+      "title": "Yellowmargin Moray Eel at Kealakekua .webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Yellowmargin_Moray_Eel_at_Kealakekua_.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
+      "views": 0,
+      "seconds_used": 58.0
+    },
+    {
+      "provider": "commons",
+      "title": "Steindachner's moray eel, Gymnothorax steindachneri.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Steindachner's_moray_eel,_Gymnothorax_steindachneri.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 70.0
+    },
+    {
+      "provider": "commons",
+      "title": "Moray eel.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Moray_eel.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
+      "views": 0,
+      "seconds_used": 7.1
+    },
+    {
+      "provider": "commons",
+      "title": "Aquarium of Cattolica - Moray eels.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Aquarium_of_Cattolica_-_Moray_eels.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
+      "views": 0,
+      "seconds_used": 8.9
+    },
+    {
+      "provider": "commons",
+      "title": "Moray Eels at the Shedd Aquarium, Chicago.webmhd.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Moray_Eels_at_the_Shedd_Aquarium,_Chicago.webmhd.webm",
+      "license": "Wikimedia Commons (CC BY-SA 3.0)",
+      "views": 0,
+      "seconds_used": 28.8
     },
     {
       "provider": "archive",
-      "title": "Snowy Owl Recovering From Crow Attack, Icy Ocean Plunge",
-      "url": "https://archive.org/details/lctvmav-Snowy_Owl_Recovering_From_Crow_Attack_Icy_Ocean_Plunge",
-      "license": "CC BY-NC 3.0",
-      "views": 25,
-      "seconds_used": 32.0
+      "title": "Estuarine moray eel (Gymnothorax tile)",
+      "url": "https://archive.org/details/Flickr-25067992192",
+      "license": "CC BY-NC 2.0",
+      "views": 26,
+      "seconds_used": 15.4
     }
   ],
-  "video_id": "4EjI7PVsN3Y",
-  "video_url": "https://youtu.be/4EjI7PVsN3Y",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_2137.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_04_2137_thumb.jpg",
-  "duration_seconds": 346.3,
-  "footage_seconds": 340.2,
-  "footage_ratio": 0.982,
-  "script_source": "gemini:gemini-3.7-flash",
-  "script_words": 937,
+  "video_id": "6SbfV4k6tLA",
+  "video_url": "https://youtu.be/6SbfV4k6tLA",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_05_1458.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_05_1458_thumb.jpg",
+  "duration_seconds": 240.4,
+  "footage_seconds": 234.4,
+  "footage_ratio": 0.975,
+  "script_source": "gemini:gemini-3.5-flash",
+  "script_words": 677,
   "qa_passed": true,
   "uploaded": true
 }
