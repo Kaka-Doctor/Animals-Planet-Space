@@ -40,7 +40,8 @@ class Settings:
     # words per second of narration (edge-tts at this rate averages ~2.3 w/s;
     # 2.1 is the conservative planning figure so narration fits the footage)
     words_per_second: float = 3.0
-    animal_cooldown_days: int = 60     # same animal only re-featured after N days
+    animal_cooldown_days: int = 3      # Big-15 channel: repeats are the
+                                       # point — just never within days
     animal_attempts: int = 3           # animals tried per slot when footage runs dry
 
     # --- Posting cadence ---------------------------------------------------
@@ -112,7 +113,7 @@ class Settings:
             voice=get("VOICE", "en-US-AndrewNeural"),
             tts_rate=get("TTS_RATE", "+6%"),
             words_per_second=float(get("WORDS_PER_SECOND", "3.0") or 3.0),
-            animal_cooldown_days=int(get("ANIMAL_COOLDOWN_DAYS", "60") or 60),
+            animal_cooldown_days=int(get("ANIMAL_COOLDOWN_DAYS", "3") or 3),
             animal_attempts=int(get("ANIMAL_ATTEMPTS", "3") or 3),
             min_hours_between_posts=float(
                 get("MIN_HOURS_BETWEEN_POSTS", "10.5") or 10.5),

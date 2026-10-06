@@ -44,13 +44,27 @@ SCHEMA_HINT = """{
 
 
 def build_prompt(topic: EpisodeTopic, settings: Settings,
-                 target_words: int, footage_seconds: float) -> str:
+                 target_words: int, footage_seconds: float,
+                 past_titles: list[str] | None = None) -> str:
+    past = "\n".join(f"- {t}" for t in (past_titles or [])[-4:]) or "(none yet)"
+    repeat_note = ("\nTHIS IS A REPEAT ANIMAL: the channel features only the "
+                   "BIG 15 giants, so viewers already know the basics — go "
+                   "DEEPER on this angle and setting, and make every fact "
+                   "feel new. The YouTube title, hook, and description must "
+                   "be CLEARLY different from the past titles above."
+                   if (past_titles or []) else "")
     return f"""You are the energetic narrator of "Animals Planet Space" — a YouTube
 wildlife channel. The viewer is watching REAL documentary footage of the
 {topic.animal}, filmed in {topic.region.replace('Arctic', 'the Arctic').replace('Ocean', 'the ocean').replace('Rivers', 'rivers and wetlands').replace('Islands', 'islands')}, and your voice carries them through it.
 
 THIS EPISODE'S ANIMAL: {topic.animal}
+EPISODE NUMBER: #{topic.episode_number} for this animal on this channel
 EPISODE ANGLE: {topic.angle_title} — {topic.angle_brief}
+SETTING FOCUS: {topic.environment or 'its natural habitat'} — flavor the
+narration, facts, and on-screen beats toward this specific setting, so
+episodes of the same animal never feel the same.
+PAST TITLES FOR THIS ANIMAL (already used — the new one must be
+distinctly different):{chr(10)}{past}{repeat_note}
 FOOTAGE LENGTH: about {footage_seconds / 60:.1f} minutes of real video plays
 under your narration (footage first, script second — never describe things
 the camera cannot show).
@@ -92,11 +106,12 @@ HARD RULES:
   "Born for the Night", "The Ambush Unfolds".
 - "on_screen": 2-4 ultra-short phrases (max ~7 words), title case, no
   ending punctuation.
-- "thumbnail_text": 3-6 words selling THIS animal + angle, ALL-CAPS energy
-  (e.g. "KING OF THE SAVANNA!").
+- "thumbnail_text": 3-6 words selling THIS animal + angle or setting,
+  ALL-CAPS energy (e.g. "KING OF THE SAVANNA!").
 - "title" (YouTube): under 95 chars, energetic but truthful, feature the
-  animal name in CAPS and the angle, e.g. "LION: The Ultimate Hunter of
-  the Savanna | Wildlife Documentary".
+  animal name in CAPS plus THIS episode's angle or setting (e.g. "LION:
+  Night Hunt on the Serengeti | Wildlife Documentary"). If past titles
+  exist above, the new title must NOT reuse their framing.
 
 Return ONLY valid JSON matching exactly this shape:
 {SCHEMA_HINT}"""
@@ -350,7 +365,9 @@ def _template_script(topic: EpisodeTopic, min_words: int) -> Script:
              ["A window, not a show", "Always happening"]),
         ][len(sections) % 3]
         sections.insert(-1, Section(*filler))
-    title = (f"{a.upper()}: Up Close in the Wild | Real Wildlife Footage")
+    env = (topic.environment or "the wild").strip().lstrip("the ").strip()
+    title = (f"{a.upper()} in {env.title()}: {topic.angle_title.title()}"
+             f" | Real Wildlife Footage")
     return Script(
         hook=f"This is the {a} like you have rarely seen it — no staging, "
              f"no tricks, just the wild.",
@@ -369,14 +386,16 @@ def _template_script(topic: EpisodeTopic, min_words: int) -> Script:
 # ---------------------------------------------------------------------------
 
 def generate_script(topic: EpisodeTopic, settings: Settings,
-                    footage_seconds: float) -> Script:
+                    footage_seconds: float,
+                    past_titles: list[str] | None = None) -> Script:
     """Write the episode script sized to the footage we actually have."""
     target_words = max(
         settings.min_template_words,
         int((footage_seconds - settings.title_card_seconds
              - settings.outro_card_seconds) * settings.words_per_second))
     if settings.gemini_api_key:
-        prompt = build_prompt(topic, settings, target_words, footage_seconds)
+        prompt = build_prompt(topic, settings, target_words, footage_seconds,
+                              past_titles=past_titles)
         try:
             raw, model = _call_gemini(prompt, settings)
             script = _parse_script(raw, f"gemini:{model}")

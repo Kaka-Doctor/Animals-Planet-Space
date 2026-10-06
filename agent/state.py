@@ -1,14 +1,16 @@
 """Track posting state + featured animals (state.json in the repo root).
 
-Three jobs:
+Four jobs:
   * twice-a-day guard   — the channel posts every ~12 hours; a new episode
     is allowed only after MIN_HOURS_BETWEEN_POSTS (default 10.5, tolerant
     of GitHub cron delays). `post_log` keeps the recent upload timestamps.
-  * animal ledger       — which animal + angle featured when, so episodes
-    never repeat the same animal until ANIMAL_COOLDOWN_DAYS passes, and
-    never repeat "in an exact way" (each re-feature gets a fresh angle,
-    and region rotation keeps consecutive episodes on different parts of
-    the world).
+  * animal ledger       — which animal + angle + setting featured when, so
+    the same animal never repeats "in an exact way": a re-feature gets a
+    fresh angle, a rotating environment, different source videos, and a
+    different title/description.
+  * used-source ledger  — `used_sources[animal]` remembers every source
+    video URL already cut into past episodes of that animal, so repeats
+    are always built from DIFFERENT footage.
   * metadata            — episode counter, last video, last run.
 """
 from __future__ import annotations
@@ -27,6 +29,8 @@ EAT = timezone(timedelta(hours=3))
 
 MAX_POST_LOG = 30      # recent uploads remembered for the cadence guard
 MAX_LEDGER = 300       # animal-feature memory cap
+MAX_USED_SOURCES = 80  # per animal: source URLs remembered so repeats
+                       # always use DIFFERENT footage
 
 
 def today_eat() -> str:
@@ -77,10 +81,13 @@ def load(path: Path | None = None, settings: Settings | None = None) -> dict:
         "last_post_date": None,
         "post_log": [],
         "covered_animals": [],
-        "note": "Wildlife documentaries, twice a day (~every 12h). post_log "
-                "keeps recent upload times for the cadence guard; "
-                "covered_animals is the animal ledger (dedup + angle "
-                "rotation) powering no-exact-repeat episodes.",
+        "used_sources": {},
+        "note": "Big-15 wildlife documentaries, twice a day (~every 12h). "
+                "post_log keeps recent upload times for the cadence guard; "
+                "covered_animals is the animal ledger (dedup + angle/"
+                "environment rotation) powering no-exact-repeat episodes; "
+                "used_sources blocks already-used footage per animal so "
+                "repeats are cut from different videos.",
     }
     if not p.exists():
         log.info("No state file — starting fresh.")
@@ -89,6 +96,7 @@ def load(path: Path | None = None, settings: Settings | None = None) -> dict:
         data = json.loads(p.read_text(encoding="utf-8"))
         data.setdefault("covered_animals", [])
         data.setdefault("post_log", [])
+        data.setdefault("used_sources", {})
         data.setdefault("completed", 0)
         return data
     except Exception as exc:  # noqa: BLE001
@@ -97,8 +105,11 @@ def load(path: Path | None = None, settings: Settings | None = None) -> dict:
 
 
 def advance(path: Path | None, video_url: str, video_id: str,
-            topic, settings: Settings | None = None) -> dict:
-    """Record a successful upload: cadence log + animal ledger."""
+            topic, settings: Settings | None = None,
+            source_urls: list[str] | None = None) -> dict:
+    """Record a successful upload: cadence log + animal ledger + the
+    source-video URLs used (so future episodes of this animal cut
+    DIFFERENT footage)."""
     p = path or (Path(settings.state_file) if settings and settings.state_file
                  else STATE_FILE)
     data = load(p, settings)
@@ -120,13 +131,24 @@ def advance(path: Path | None, video_url: str, video_id: str,
         "animal": topic.animal,
         "region": getattr(topic, "region", ""),
         "angle": getattr(topic, "angle_title", ""),
+        "environment": getattr(topic, "environment", ""),
         "date": now.isoformat(timespec="seconds"),
         "video_id": video_id,
     })
     data["covered_animals"] = data["covered_animals"][-MAX_LEDGER:]
 
+    used = data.setdefault("used_sources", {})
+    key = str(topic.animal).strip().lower()
+    seen = used.setdefault(key, [])
+    for url in source_urls or []:
+        if url and url not in seen:
+            seen.append(url)
+    used[key] = seen[-MAX_USED_SOURCES:]
+
     p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
     log.info("State advanced → episode #%d live at %s (ledger: %d animals, "
-             "post log: %d)", data["completed"], video_url,
-             len(data["covered_animals"]), len(data["post_log"]))
+             "post log: %d, %d sources used for %s)",
+             data["completed"], video_url,
+             len(data["covered_animals"]), len(data["post_log"]),
+             len(used.get(key, [])), key)
     return data

@@ -1,7 +1,8 @@
 """Real animal footage from license-clean sources — the MAIN visual track.
 
-The episode is built from real, moving wildlife video (never static image
-slides). Three sources, all legal for reuse:
+The channel is dedicated to the BIG 15 (Big Five + ten more giants),
+and every episode is built from real, moving wildlife video of exactly
+that animal (never static slides). Three sources, all legal for reuse:
 
   1. YouTube Creative-Commons videos — search.list with
      license=creativeCommons, ORDERED BY VIEW COUNT ("many views" per the
@@ -19,6 +20,10 @@ that satisfies the CC-BY attribution requirement.
 
 Failures at any level are skipped gracefully; we keep collecting until the
 footage timeline reaches the target duration (or the sources run dry).
+
+Repeats stay fresh: `used_before` (state.json → used_sources) blocks every
+source URL already featured in a past episode of this animal, so a repeat
+episode is always cut from DIFFERENT videos.
 """
 from __future__ import annotations
 
@@ -31,7 +36,7 @@ from pathlib import Path
 
 import requests
 
-from .animals import CATALOG, EpisodeTopic
+from .animals import ALIASES, CATALOG, EpisodeTopic, SCI_ALIASES
 from .config import Settings
 from .video import probe_duration
 
@@ -54,50 +59,84 @@ ARCHIVE_META = "https://archive.org/metadata/{id}"
 
 
 # ---------------------------------------------------------------------------
-# Relevance: the footage must be ABOUT the episode's animal
+# Relevance: the footage must be ABOUT the episode's BIG-15 animal
 # ---------------------------------------------------------------------------
 
 # Light stemming so plurals match ("Leopards of Kruger" must count as
-# "leopard"); tiny irregular map covers the common zoo-animals.
+# "leopard"). ONLY a trailing "s" is stripped — an "es"/"ies" rule
+# would wreck words like "whales"/"giraffes"/"crocodiles"; their genuine
+# irregulars live in the map below instead.
 _IRREGULAR = {"wolves": "wolf", "mice": "mouse", "geese": "goose",
               "moose": "moose", "fish": "fish", "sheep": "sheep",
               "deer": "deer", "foxes": "fox", "oxen": "ox",
               "tigress": "tiger", "tigresses": "tiger",
               "lioness": "lion", "lionesses": "lion",
               "leopardess": "leopard", "leopardesses": "leopard",
-              "cubs": "cub"}
+              "cubs": "cub", "buffaloes": "buffalo",
+              "grizzlies": "grizzly", "lynxes": "lynx",
+              "hippos": "hippo", "rhinos": "rhino", "crocs": "croc"}
 
 
 def _stem(w: str) -> str:
     w = w.lower()
     if w in _IRREGULAR:
         return _IRREGULAR[w]
-    for suf in ("ies", "es", "s"):
-        if w.endswith(suf) and len(w) - len(suf) >= 3:
-            return w[: -len(suf)]
+    if w.endswith("s") and len(w) - 1 >= 3:
+        return w[:-1]
     return w
 
 
-# Geographic / abundance / coloring qualifiers that are NOT part of an
-# animal's identity for matching purposes ("African Elephant" ~
-# "elephant", "Spotted Hyena" ~ "hyena").
-_QUALIFIERS = {"african", "asiatic", "asian", "indian", "european",
-               "american", "arctic", "antarctic", "bengal", "cape",
-               "nile", "greater", "lesser", "common", "plain", "the",
-               "of", "a", "and", "spotted", "striped", "painted",
-               "crested", "helmeted", "himalayan", "siberian",
-               "sumatran", "californian", "florida", "texas"}
+def _alias_sets(animal: str) -> list[tuple[str, ...]]:
+    """Alias token sets: a title matches the animal when ANY alias appears
+    (single word anywhere, multi-word as an adjacent phrase). "rhino"
+    counts for Rhinoceros, "brown bear"/"kodiak" for Grizzly Bear,
+    "killer whale" for Orca, "panthera pardus" for Leopard."""
+    out: list[tuple[str, ...]] = []
+    for alias in (*ALIASES.get(animal, (animal,)),
+                  *SCI_ALIASES.get(animal, ())):
+        toks = tuple(_stem(w) for w in
+                     re.findall(r"[a-z]{3,}", alias.lower()))
+        if toks:
+            out.append(toks)
+    return out
 
 
-def _main_words(animal: str) -> set[str]:
-    """Distinctive stemmed words of an animal name (ALL must appear in a
-    candidate title — multi-word animals match as a whole)."""
-    return {_stem(w) for w in re.findall(r"[a-z]{3,}", animal.lower())
-            if w not in _QUALIFIERS}
+def _common_words(animal: str) -> set[str]:
+    """COMMON-name alias words only (no scientific names) — vehicle-style
+    patterns ("Leopard 2A7", "Tiger 131") only ever use common names, so
+    the numbered-name check must not burn sci-word zoo files like
+    "Panthera leo 01"."""
+    out: set[str] = set()
+    for alias in ALIASES.get(animal, (animal,)):
+        out |= {_stem(w) for w in
+                re.findall(r"[a-z]{3,}", alias.lower())}
+    return out
 
 
-# Species whose NAMES contain another animal's name — never usable when
-# the topic is that other animal (adjacent-pair check on stemmed tokens).
+def _title_tokens(title: str) -> list[str]:
+    return [_stem(w) for w in re.findall(r"[a-z]{3,}", (title or "").lower())]
+
+
+def _find_phrase(seq: list[str], words: tuple[str, ...]) -> int | None:
+    """Index of the FIRST occurrence of the alias in the token sequence.
+    Single word: anywhere. Multi-word: adjacent (order-insensitive)."""
+    n = len(words)
+    if n == 1:
+        try:
+            return seq.index(words[0])
+        except ValueError:
+            return None
+    wset = set(words)
+    for i in range(len(seq) - n + 1):
+        if set(seq[i:i + n]) == wset:
+            return i
+    return None
+
+
+# Confuser pairs — a DIFFERENTLY-NAMED species built from one of our
+# words ("leopard seal", "tiger shark", "wolf spider", "lion fish",
+# "elephant shrew"...). Only rejects when the second word is not part
+# of the animal's own aliases.
 _CONFUSERS = {"tortoise", "seal", "shark", "gecko", "frog", "toad",
               "moth", "butterfly", "eagle", "ray", "snake", "lizard",
               "cat", "dog", "danio", "cichlid", "wrasse", "puffer",
@@ -105,91 +144,182 @@ _CONFUSERS = {"tortoise", "seal", "shark", "gecko", "frog", "toad",
               "warbler", "babbler", "octopus", "squid", "crab",
               "spider", "wasp", "beetle", "mantis", "cricket",
               "scorpion", "turtle", "viper", "cobra", "snail",
-              "slug", "orchid", "lily", "urchin"}
+              "slug", "orchid", "lily", "urchin", "fish", "fly",
+              "shrimp", "eel", "heron", "shrew"}
 
+# LOOKALIKE species — closely related but DIFFERENT species whose names
+# contain one of our words. ALWAYS rejected, regardless of position: a
+# "snow leopard" video is not a Leopard video; "water buffalo" is not a
+# Cape Buffalo; "asian elephant" is not the African Elephant.
+_LOOKALIKE: list[tuple[str, ...]] = [
+    ("snow", "leopard"), ("clouded", "leopard"), ("leopard", "seal"),
+    ("leopard", "cat"), ("leopard", "tortoise"), ("leopard", "gecko"),
+    ("leopard", "shark"), ("sea", "leopard"),
+    ("asian", "elephant"), ("indian", "elephant"),
+    ("forest", "elephant"), ("pygmy", "elephant"),
+    ("water", "buffalo"), ("american", "buffalo"),
+    ("pygmy", "hippo"),
+    ("american", "crocodile"), ("saltwater", "crocodile"),
+    ("american", "alligator"),
+    ("black", "bear"), ("sun", "bear"), ("sloth", "bear"),
+    ("spectacled", "bear"), ("moon", "bear"),
+    ("sea", "lion"), ("mountain", "lion"),
+    ("bullfrog",), ("catfish",),
+]
+
+# OTHER animals — not in the Big-15 catalog and never an episode topic.
+# CO-SUBJECT species (other predators, apes, birds, reptiles...): both
+# the subject-first rule AND the menagerie rule apply — two or more
+# distinct co-subjects named means a sanctuary reel / zoo mix. Entries
+# that are a subset of the topic animal's own alias tokens never reject
+# (the "bear" in "polar bear", the "whale" in "killer whale").
+_OTHER_ANIMALS: list[tuple[str, ...]] = [
+    ("hyena",), ("baboon",), ("monkey",), ("chimpanzee",),
+    ("chimp",), ("orangutan",), ("meerkat",), ("mongoose",),
+    ("camel",), ("goose",), ("horse",), ("donkey",),
+    ("chicken",), ("duck",), ("dog",), ("cat",), ("fox",),
+    ("coyote",), ("jackal",), ("walrus",), ("otter",),
+    ("beaver",), ("raccoon",), ("skunk",), ("porcupine",),
+    ("squirrel",), ("kangaroo",), ("koala",), ("panda",),
+    ("peacock",), ("ostrich",), ("emu",), ("vulture",),
+    ("eagle",), ("owl",), ("parrot",), ("dolphin",), ("shark",),
+    ("whale",), ("turtle",), ("tortoise",), ("snake",),
+    ("python",), ("cobra",), ("lizard",), ("iguana",),
+    ("alligator",), ("caiman",), ("gharial",), ("jaguar",),
+    ("puma",), ("cougar",), ("lynx",), ("bobcat",),
+    ("wild", "dog"), ("dingo",), ("lemur",), ("sloth",),
+    ("bear",), ("bison",),
+]
+
+# Natural PREY species: hunting footage legitimately names the prey
+# ("Lion hunts zebra", "Orca hunting sea lions"), so these only trigger
+# the subject-first rule — never the menagerie rule.
+_PREY_ANIMALS: list[tuple[str, ...]] = [
+    ("zebra",), ("wildebeest",), ("gazelle",), ("antelope",),
+    ("impala",), ("kudu",), ("warthog",), ("seal",),
+    ("sea", "lion"), ("penguin",), ("goat",), ("sheep",),
+    ("cow",), ("cattle",), ("pig",), ("boar",), ("deer",),
+    ("elk",), ("moose",), ("rabbit",),
+]
 
 # Machines named after animals (Yakovlev "Yak-130" jets, "Leopard 2A7"
-# tanks, "Tiger Moth" planes...) — never real footage of the animal.
-# Either a vehicle keyword anywhere, or the "<animal>-<number>" vehicle
-# naming pattern, rejects the source. Words like "flight"/"takeoff"/
-# "tank" are deliberately NOT here — they appear in real bird/aquarium
-# footage titles ("eagle in flight", "fish tank").
+# tanks, "Tiger Moth" planes, sports teams, dishes...) — never real
+# footage of the animal. Either a vehicle/event keyword anywhere, or the
+# "<animal>-<number>" vehicle naming pattern, rejects the source.
 _MACHINE_WORDS = {"aircraft", "airplane", "aeroplane", "flugzeug",
                   "avion", "airliner", "jet", "fighter", "bomber",
                   "helicopter", "heli", "panzer", "missile",
-                  "rocket", "locomotive", "tramway", "airbase", "squadron",
-                  "aerobatics", "starvorgang", "yakovlev", "airshow",
-                  "taxiing", "luftwaffe", "wehrmacht", "kampfjet"}
+                  "rocket", "locomotive", "tramway", "airbase",
+                  "squadron", "aerobatics", "starvorgang", "yakovlev",
+                  "airshow", "taxiing", "luftwaffe", "wehrmacht",
+                  "kampfjet", "tank", "golf", "nfl", "football",
+                  "soccer", "hockey", "stadium", "quarterback",
+                  "recipe", "cooking", "wings", "bbq", "dance",
+                  "dragon", "plunge", "trailer", "gameplay",
+                  "minecraft", "robot", "review", "unboxing",
+                  "covid", "pandemic", "firefighter", "sapeurs"}
+
+_CATALOG_ALIASES = [(name, _alias_sets(name)) for name, _r, _h in CATALOG]
 
 
-def _catalog_main_words() -> list[tuple[str, set[str]]]:
-    """[(catalog animal name, stemmed main words)] for other-animal scan."""
-    out = []
-    for name, _region, _hints in CATALOG:
-        out.append((name, _main_words(name)))
-    return out
-
-
-_CATALOG_WORDS = _catalog_main_words()
-
-
-def _title_tokens(title: str) -> list[str]:
-    return [_stem(w) for w in re.findall(r"[a-z]{3,}", (title or "").lower())]
+def _strip_big_cat(title: str) -> str:
+    """"Big cats" is a family label for our own felines, not another
+    animal ("LION: King of the Big Cats" must pass for Lion)."""
+    return re.sub(r"\bbig[- ]cats?\b", " ", title or "", flags=re.I)
 
 
 def _title_relevant(title: str, animal: str) -> tuple[bool, str]:
-    """Strict title gate for footage of THIS animal.
+    """Strict BIG-15 title gate for footage of THIS animal.
 
-    Rules (all on stemmed tokens):
-    1. every main word of the animal name must appear (multi-word animals
-       match whole — "Snow Leopard" topic needs BOTH words);
-    2. confuser pairs reject differently-named species ("leopard tortoise",
-       "leopard seal", "leopard gecko"...);
-    3. any OTHER catalog animal named in the title (that is not just a
-       subset of this animal's own name) rejects the source — zoo
-       compilations ("Polar Bear - Snow Leopard - African Elephant") and
-       mixed-species reels are exactly what this channel must avoid.
-       Multi-word catalog animals must appear as an ADJACENT phrase, so
-       "Amur leopard in the snow" is NOT misread as "snow leopard".
+    Rules (on stemmed tokens):
+    1. at least one ALIAS of the animal must appear (multi-word aliases
+       match as adjacent phrases — "killer whale" counts for Orca,
+       "brown bear" for Grizzly Bear, "rhino" for Rhinoceros);
+    2. lookalike species always reject ("snow leopard" ≠ Leopard,
+       "water buffalo" ≠ Cape Buffalo, "asian elephant" ≠ the African);
+    3. confuser pairs reject ("leopard seal", "tiger shark",
+       "wolf spider", "lion fish");
+    4. machines/events named after the animal reject (jets, tanks,
+       numbered vehicles, sports teams, dishes);
+    5. any OTHER animal (Big-15 or common) mentioned BEFORE our animal
+       rejects the source — "Zebra escapes the lion" is a zebra video,
+       and zoo compilations list their animals up front. Our animal
+       first is fine: "Lion hunts zebra" IS lion footage.
     """
     seq = _title_tokens(title)
-    tokens = set(seq)
-    mine = _main_words(animal)
+    mine = _alias_sets(animal)
     if not mine:
         return True, ""
-    if not mine <= tokens:
-        missing = ", ".join(sorted(mine - tokens))
+    my_first = min((i for i in (_find_phrase(seq, a) for a in mine)
+                    if i is not None), default=None)
+    if my_first is None:
+        missing = ", ".join(" ".join(a) for a in mine)
         return False, f"animal words missing ({missing})"
 
+    my_words = {w for a in mine for w in a}
+
+    # 2. lookalike species — always reject, but only when the lookalike
+    # name actually builds on one of OUR words ("snow leopard" vs the
+    # Leopard topic; "sea lion" vs the Lion topic — while "Orca hunting
+    # sea lions" stays legal predation footage for the Orca topic)
+    for phrase in _LOOKALIKE:
+        if set(phrase) <= my_words:
+            continue          # part of this animal's own names
+        if not (set(phrase) & my_words):
+            continue          # lookalike of some OTHER animal, not ours
+        if _find_phrase(seq, phrase) is not None:
+            return False, f"lookalike species ('{' '.join(phrase)}')"
+
+    # 3. confuser pairs ("leopard seal", "tiger shark"...)
     for i in range(len(seq) - 1):
-        # confuser pair — but never when the pair is part of the animal's
-        # OWN name ("golden eagle" for topic Golden Eagle must pass)
-        if seq[i] in mine and seq[i + 1] in _CONFUSERS \
-                and seq[i + 1] not in mine:
+        if seq[i] in my_words and seq[i + 1] in _CONFUSERS \
+                and seq[i + 1] not in my_words:
             return False, f"different species ('{seq[i]} {seq[i + 1]}')"
 
-    # machines named after animals: "Yak-130", "Leopard 2 tank"...
+    # 4. machines / events / dishes named after the animal
+    tokens = set(seq)
     if tokens & _MACHINE_WORDS:
-        return False, "machine named after the animal"
-    for w in mine:
+        return False, "machine or event named after the animal"
+    for w in _common_words(animal):
         if re.search(rf"\b{re.escape(w)}[- ]?\d", title.lower()):
             return False, f"numbered vehicle name ('{w}-<number>')"
 
-    def _mentions(words: set[str]) -> bool:
-        """Single word: present anywhere. Multi-word: adjacent phrase."""
-        if len(words) == 1:
-            return next(iter(words)) in tokens
-        wl = list(words)
-        n = len(wl)
-        for i in range(len(seq) - n + 1):
-            if set(seq[i:i + n]) == set(wl):
-                return True
-        return False
+    # 5. other animals — subject-first heuristic + menagerie detector
+    scan = _title_tokens(_strip_big_cat(title))
+    my_scan = min((i for i in (_find_phrase(scan, a) for a in mine)
+                   if i is not None), default=0)
 
-    for other_name, other_words in _CATALOG_WORDS:
-        if other_words and _mentions(other_words) \
-                and not other_words <= mine:
-            return False, f"mentions other animal ({other_name})"
+    def _idx(words: tuple[str, ...]) -> int | None:
+        if set(words) <= my_words:
+            return None           # part of our own name (bear/whale/wolf)
+        return _find_phrase(scan, words)
+
+    distinct_others: set[str] = set()
+    for other_name, alias_list in _CATALOG_ALIASES:
+        if other_name.lower() == animal.lower():
+            continue
+        for a in alias_list:
+            idx = _idx(a)
+            if idx is None:
+                continue
+            if idx < my_scan:
+                return False, f"other animal first ({other_name})"
+            distinct_others.add(other_name)   # present, but after ours
+            break
+    for phrase in _OTHER_ANIMALS:
+        idx = _idx(phrase)
+        if idx is None:
+            continue
+        if idx < my_scan:
+            return False, f"other animal first ({' '.join(phrase)})"
+        distinct_others.add(" ".join(phrase))
+    if len(distinct_others) >= 2:
+        return False, ("menagerie / multi-species reel ("
+                       + ", ".join(sorted(distinct_others)) + ")")
+    for phrase in _PREY_ANIMALS:
+        idx = _idx(phrase)
+        if idx is not None and idx < my_scan:
+            return False, f"prey animal first ({' '.join(phrase)})"
     return True, ""
 
 
@@ -329,11 +459,22 @@ def _yt_download(video_id: str, out_path: Path) -> Path | None:
     return out_path
 
 
+def _env_query(topic: EpisodeTopic) -> str:
+    """Environment-flavored search variant, e.g. 'Lion Serengeti plains'
+    — drives DIFFERENT footage for repeat episodes of the same animal."""
+    env = (topic.environment or "").strip()
+    for prefix in ("the ", "a ", "its "):
+        if env.lower().startswith(prefix):
+            env = env[len(prefix):]
+    return f"{topic.animal} {env}".strip() if env else topic.animal
+
+
 def _find_yt_source(topic: EpisodeTopic, settings: Settings,
                     work_dir: Path, exclude: set[str]) -> FootageSource | None:
     for duration in ("medium", "short", "long"):
         for query in (f"{topic.animal} wildlife",
-                      f"{topic.animal} {topic.hints}", topic.animal):
+                      f"{topic.animal} {topic.hints}",
+                      _env_query(topic), topic.animal):
             items = _yt_search(query, settings, duration)
             if not items:
                 log.info("YouTube CC search %r (%s): 0 items",
@@ -452,6 +593,7 @@ def _find_commons_source(topic: EpisodeTopic, settings: Settings,
     # itself to the footage we actually found.
     for query in (f"{topic.animal}", f"{topic.animal} {topic.hints}",
                   f"{topic.animal} hunting", f"{topic.animal} behavior",
+                  _env_query(topic),
                   f"{topic.animal} {topic.region}",
                   f"{topic.animal} national park", f"{topic.animal} zoo",
                   f"{topic.animal} cubs"):
@@ -539,6 +681,7 @@ def _find_archive_source(topic: EpisodeTopic, settings: Settings,
     # animal-specific queries ONLY — see note in _find_commons_source
     for query in (f"{topic.animal} wildlife", f"{topic.animal} animals",
                   f"{topic.animal} {topic.hints}", f"{topic.animal} film",
+                  _env_query(topic),
                   f"{topic.animal} {topic.region}"):
         for doc in _archive_search(query):
             ident = doc.get("identifier", "")
@@ -608,19 +751,26 @@ def _find_archive_source(topic: EpisodeTopic, settings: Settings,
 # ---------------------------------------------------------------------------
 
 def collect_footage(topic: EpisodeTopic, settings: Settings,
-                    work_dir: Path, needed_seconds: float) -> list[FootageSource]:
+                    work_dir: Path, needed_seconds: float,
+                    used_before: set[str] | None = None
+                    ) -> list[FootageSource]:
     """Collect real footage until the timeline reaches needed_seconds.
+
+    `used_before` carries the source URLs of this animal's PAST episodes
+    (state.json → used_sources): they are excluded so a repeat episode
+    is always cut from DIFFERENT source videos.
 
     Returns the list of sources with their segments assigned. Never raises —
     a short return list simply fails the footage quality gate later.
     """
     work_dir.mkdir(parents=True, exist_ok=True)
     sources: list[FootageSource] = []
-    exclude: set[str] = set()
+    exclude: set[str] = set(used_before or set())
     total = 0.0
 
-    log.info("FOOTAGE HUNT: %s — need %.0fs of real video",
-             topic.animal, needed_seconds)
+    log.info("FOOTAGE HUNT: %s — need %.0fs of real video "
+             "(%d past source URLs blocked)",
+             topic.animal, needed_seconds, len(exclude))
     while total < needed_seconds and len(sources) < settings.max_sources:
         src = None
         # alternate providers so a single blocked source never dominates

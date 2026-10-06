@@ -4,10 +4,22 @@ Posts **two wildlife documentary videos every day** (every ~12 hours) to
 https://www.youtube.com/@AnimalsPlanetSpace — fully autonomous, running on
 GitHub Actions.
 
-Each episode features **ONE animal from a different part of the world**
-(Africa → Asia → the Arctic → the oceans → the Americas → Australia →
-islands → Europe, rotating), explored through a rotating angle (hunting &
-feeding, family life, survival adaptations, habitat, secret behaviors…).
+Each episode features **ONE of the BIG 15 giants** — the African Big Five
+(lion, leopard, elephant, rhinoceros, cape buffalo) plus ten more icons
+viewers never tire of (giraffe, hippopotamus, Nile crocodile, cheetah,
+Bengal tiger, polar bear, grizzly bear, gray wolf, gorilla, orca) —
+explored through a rotating angle (hunting & feeding, family life, night
+life, epic battles, conservation…) AND a rotating setting (Serengeti,
+Kruger, the sea ice, a night hunt…), so the same animal repeats forever
+without ever repeating the same way.
+
+**Selection is popularity-driven**: the agent pulls the views + likes of
+its own uploads each run and features the most-watched animals MORE
+often (weighted random, capped so every giant still rotates). A short
+3-day cooldown keeps any animal from appearing twice within days, and a
+`used_sources` ledger blocks every source video already featured for
+that animal — repeat episodes are always cut from **different real
+videos**, with different titles and descriptions.
 
 The visuals are **REAL moving wildlife footage — never static image
 slides**, collected legally from three license-clean sources:
@@ -28,14 +40,17 @@ to the footage actually collected.
 
 ```
 agent/
-  animals.py     animal catalog (146, world regions) + selection & dedup
+  animals.py     the BIG-15 catalog (Big Five + 10 giants), aliases +
+                 environments, popularity-weighted selection & cooldown
   footage.py     real-footage collector (YouTube CC / Commons / Archive)
   scriptgen.py   Gemini documentary script, sized to the footage
   tts.py         energetic male narration (edge-tts)
   video.py       footage-first assembly (title card + real clips + outro)
   thumbnail.py   epic thumbnails & cards from REAL footage frames
   youtube.py     upload (resumable, chunk-safe) + thumbnails + description
-  state.py       12-hour cadence guard + animal ledger (no repeats)
+  state.py       12-hour cadence guard + animal ledger + used-source
+                 ledger (repeats always use different footage)
+  popularity.py  channel-performance scoring (views + likes per animal)
   qa.py          pre-upload quality gate (duration, REAL-footage ratio…)
   main.py        orchestrator
 scripts/

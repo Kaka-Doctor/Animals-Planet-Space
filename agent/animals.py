@@ -1,13 +1,24 @@
-"""Animal catalog + episode selection.
+"""Animal catalog + episode selection — the BIG 15.
 
-The channel travels the world: animals are grouped by region and selection
-rotates through the regions (Africa → Asia → Arctic → Ocean → Americas →
-Islands → Europe → Australia...) so consecutive episodes feature wildlife
-from different parts of the planet. An animal is only re-featured after
-ANIMAL_COOLDOWN_DAYS, and every re-feature gets a fresh ANGLE (hunting,
-family life, survival adaptations...) so nothing repeats "in an exact way".
+This channel is dedicated to the world's most iconic BIG animals: the
+African Big Five (lion, leopard, elephant, rhinoceros, cape buffalo) plus
+ten more giants viewers never tire of (giraffe, hippopotamus, nile
+crocodile, cheetah, bengal tiger, polar bear, grizzly bear, gray wolf,
+gorilla, orca). ONLY these 15 are ever featured — but they repeat
+endlessly with deliberate variety:
 
-State ledger (state.json → covered_animals) powers the dedup.
+  * a fresh ANGLE each time (hunting, family life, night life, battles…)
+  * a rotating ENVIRONMENT/SETTING (Serengeti, Kruger, night hunt…)
+  * DIFFERENT source videos each time (state.json → used_sources ledger
+    blocks every URL already used for that animal)
+  * different titles/descriptions (the script prompt is told this is
+    episode #N, gets the past titles, and must write a distinctly new one)
+
+SELECTION IS POPULARITY-DRIVEN: animals whose past episodes earned the
+most views + likes on the channel get featured MORE often (weighted
+random — see agent/popularity.py), so the most-watched animals naturally
+dominate the schedule while a short cooldown keeps any animal from
+appearing twice within days.
 """
 from __future__ import annotations
 
@@ -17,174 +28,151 @@ from datetime import datetime, timedelta, timezone
 
 from .config import Settings
 
-# (name, region, extra search hints — synonyms that widen footage matching)
+# THE BIG 15: Big Five + ten more giants. (name, region, footage hints)
 CATALOG: list[tuple[str, str, str]] = [
-    # --- Africa ---------------------------------------------------------------
-    ("Lion", "Africa", "lion savanna big cat"),
-    ("African Elephant", "Africa", "elephant herd savanna"),
-    ("Giraffe", "Africa", "giraffe savanna"),
-    ("Cheetah", "Africa", "cheetah running hunt"),
-    ("Leopard", "Africa", "leopard tree climbing"),
-    ("Rhinoceros", "Africa", "rhino white black"),
-    ("Hippopotamus", "Africa", "hippo river"),
-    ("Nile Crocodile", "Africa", "crocodile hunt"),
-    ("Spotted Hyena", "Africa", "hyena clan"),
-    ("Meerkat", "Africa", "meerkat desert"),
-    ("Gorilla", "Africa", "mountain gorilla"),
-    ("Chimpanzee", "Africa", "chimp troop forest"),
-    ("Zebra", "Africa", "zebra herd migration"),
-    ("Wildebeest", "Africa", "wildebeest migration river crossing"),
-    ("Okapi", "Africa", "okapi rainforest"),
-    ("African Wild Dog", "Africa", "painted dog hunting pack"),
-    ("Flamingo", "Africa", "flamingo flock lake"),
-    ("Secretary Bird", "Africa", "secretary bird snake hunt"),
-    ("Aardvark", "Africa", "aardvark nocturnal"),
-    ("Bonobo", "Africa", "bonobo"),
-    # --- Asia ---------------------------------------------------------------
-    ("Bengal Tiger", "Asia", "tiger hunt jungle"),
-    ("Giant Panda", "Asia", "panda bamboo"),
-    ("Snow Leopard", "Asia", "snow leopard mountain"),
-    ("Orangutan", "Asia", "orangutan canopy"),
-    ("Asian Elephant", "Asia", "elephant forest asia"),
-    ("Red Panda", "Asia", "red panda climbing"),
-    ("King Cobra", "Asia", "king cobra"),
-    ("Komodo Dragon", "Asia", "komodo monitor lizard"),
-    ("Bengal Slow Loris", "Asia", "loris nocturnal"),
-    ("Indian Rhino", "Asia", "one horned rhinoceros"),
-    ("Golden Eagle", "Asia", "golden eagle hunting"),
-    ("Crane", "Asia", "red crowned crane dance"),
-    ("Tarsier", "Asia", "tarsier philippines"),
-    ("Pangolin", "Asia", "pangolin scales"),
-    ("Bengal Tiger of the Mangroves", "Asia", "tiger swimming sundarbans"),
-    ("Yak", "Asia", "yak himalaya"),
-    ("Binturong", "Asia", "binturong bearcat"),
-    ("Gharial", "Asia", "gharial crocodile fish"),
-    # --- Arctic & Cold Regions ---------------------------------------------------------------
-    ("Polar Bear", "Arctic", "polar bear ice"),
-    ("Arctic Fox", "Arctic", "arctic fox snow"),
-    ("Reindeer", "Arctic", "caribou herd tundra"),
-    ("Walrus", "Arctic", "walrus haul out"),
-    ("Snowy Owl", "Arctic", "snowy owl"),
-    ("Musk Ox", "Arctic", "musk ox herd"),
-    ("Beluga Whale", "Arctic", "beluga white whale"),
-    ("Narwhal", "Arctic", "narwhal tusk"),
-    ("Wolverine", "Arctic", "wolverine glutton"),
-    ("Lemming", "Arctic", "lemming tundra"),
-    # --- Ocean ---------------------------------------------------------------
-    ("Great White Shark", "Ocean", "white shark breach"),
-    ("Orca", "Ocean", "killer whale orca pod"),
-    ("Humpback Whale", "Ocean", "humpback breaching"),
-    ("Blue Whale", "Ocean", "blue whale largest"),
-    ("Dolphin", "Ocean", "bottlenose dolphin pod"),
-    ("Octopus", "Ocean", "octopus camouflage"),
-    ("Sea Turtle", "Ocean", "sea turtle nesting"),
-    ("Manta Ray", "Ocean", "manta ray glide"),
-    ("Sailfish", "Ocean", "sailfish fast fish"),
-    ("Hammerhead Shark", "Ocean", "hammerhead school"),
-    ("Cuttlefish", "Ocean", "cuttlefish color change"),
-    ("Anglerfish", "Ocean", "anglerfish deep sea"),
-    ("Mantis Shrimp", "Ocean", "mantis shrimp punch"),
-    ("Moray Eel", "Ocean", "moray eel reef"),
-    ("Harbor Seal", "Ocean", "seal colony"),
-    ("Sperm Whale", "Ocean", "sperm whale diving"),
-    # --- The Americas ---------------------------------------------------------------
+    # --- The African Big Five -------------------------------------------------
+    ("Lion", "Africa", "lion pride savanna roar"),
+    ("Leopard", "Africa", "leopard tree climbing ambush"),
+    ("African Elephant", "Africa", "elephant herd matriarch"),
+    ("Rhinoceros", "Africa", "rhino white black horn"),
+    ("Cape Buffalo", "Africa", "buffalo herd oxpecker"),
+    # --- Ten more giants ------------------------------------------------------
+    ("Giraffe", "Africa", "giraffe tower necking"),
+    ("Hippopotamus", "Africa", "hippo river pool"),
+    ("Nile Crocodile", "Africa", "crocodile ambush hunt"),
+    ("Cheetah", "Africa", "cheetah speed sprint"),
+    ("Bengal Tiger", "Asia", "tiger jungle ambush"),
+    ("Polar Bear", "Arctic", "polar bear ice arctic"),
     ("Grizzly Bear", "Americas", "grizzly salmon fishing"),
-    ("Gray Wolf", "Americas", "wolf pack"),
-    ("Bald Eagle", "Americas", "bald eagle fishing"),
-    ("Jaguar", "Americas", "jaguar hunting"),
-    ("Cougar", "Americas", "mountain lion puma"),
-    ("Bison", "Americas", "bison herd prairie"),
-    ("Moose", "Americas", "moose forest"),
-    ("Alligator", "Americas", "alligator swamp"),
-    ("Anaconda", "Americas", "green anaconda"),
-    ("Harpy Eagle", "Americas", "harpy eagle rainforest"),
-    ("Poison Dart Frog", "Americas", "poison dart frog colorful"),
-    ("Sloth", "Americas", "sloth slow"),
-    ("Scarlet Macaw", "Americas", "scarlet macaw parrot"),
-    ("Capuchin Monkey", "Americas", "capuchin intelligence"),
-    ("Ocelot", "Americas", "ocelot spotted"),
-    ("Prairie Dog", "Americas", "prairie dog town"),
-    ("Beaver", "Americas", "beaver dam building"),
-    ("Condor", "Americas", "california condor vulture"),
-    ("Manatee", "Americas", "manatee sea cow"),
-    ("Raccoon", "Americas", "raccoon night clever"),
-    # --- Australia & Oceania ---------------------------------------------------------------
-    ("Kangaroo", "Australia", "kangaroo hopping"),
-    ("Koala", "Australia", "koala eucalyptus"),
-    ("Platypus", "Australia", "platypus swimming"),
-    ("Tasmanian Devil", "Australia", "tasmanian devil"),
-    ("Cassowary", "Australia", "cassowary dangerous bird"),
-    ("Dingo", "Australia", "dingo wild dog"),
-    ("Saltwater Crocodile", "Australia", "saltie crocodile"),
-    ("Wombat", "Australia", "wombat burrow"),
-    ("Emu", "Australia", "emu running"),
-    ("Echidna", "Australia", "echidna anteater"),
-    ("Wallaby", "Australia", "wallaby"),
-    ("Frilled Lizard", "Australia", "frilled neck lizard"),
-    # --- Islands & Madagascar ---------------------------------------------------------------
-    ("Ring-tailed Lemur", "Islands", "lemur madagascar"),
-    ("Chameleon", "Islands", "chameleon tongue"),
-    ("Fossa", "Islands", "fossa madagascar predator"),
-    ("Aye-aye", "Islands", "aye-aye night"),
-    ("Galapagos Tortoise", "Islands", "giant tortoise galapagos"),
-    ("Marine Iguana", "Islands", "marine iguana swimming"),
-    ("Kiwi Bird", "Islands", "kiwi nocturnal new zealand"),
-    ("Tuatara", "Islands", "tuatara reptile"),
-    ("Dodo's Cousins: Nicobar Pigeon", "Islands", "nicobar pigeon"),
-    ("Bird of Paradise", "Islands", "bird of paradise dance"),
-    # --- Europe ---------------------------------------------------------------
-    ("Brown Bear", "Europe", "brown bear forest"),
-    ("Lynx", "Europe", "lynx wild cat"),
-    ("Red Deer", "Europe", "red deer stag"),
-    ("Eurasian Beaver", "Europe", "beaver europe"),
-    ("White Stork", "Europe", "white stork migration"),
-    ("Wild Boar", "Europe", "wild boar sounder"),
-    ("European Bison", "Europe", "wisent bison"),
-    ("Iberian Lynx", "Europe", "iberian lynx rare"),
-    ("Chamois", "Europe", "chamois alpine"),
-    ("Puffin", "Europe", "puffin colony cliffs"),
-    # --- Rivers & Wetlands ---------------------------------------------------------------
-    ("Botos: Amazon River Dolphin", "Rivers", "pink river dolphin"),
-    ("Giant River Otter", "Rivers", "giant otter amazon"),
-    ("Electric Eel", "Rivers", "electric eel shock"),
-    ("Piranha", "Rivers", "piranha feeding"),
-    ("Arapaima", "Rivers", "arapaima giant fish"),
-    ("Bearded Dragon", "Rivers", "bearded dragon"),
-    # --- Reptiles & Amphibians ---------------------------------------------------------------
-    ("Chameleon Master of Disguise", "Reptiles", "chameleon color"),
-    ("Gecko", "Reptiles", "gecko wall climbing"),
-    ("Rattlesnake", "Reptiles", "rattlesnake strike"),
-    ("Monitor Lizard", "Reptiles", "monitor lizard"),
-    ("Axolotl", "Reptiles", "axolotl regeneration"),
-    ("Basilisk Lizard", "Reptiles", "jesus christ lizard running water"),
-    # --- Birds ---------------------------------------------------------------
-    ("Peregrine Falcon", "Birds", "peregrine fastest dive"),
-    ("Hummingbird", "Birds", "hummingbird hovering"),
-    ("Ostrich", "Birds", "ostrich running"),
-    ("Raven", "Birds", "raven intelligence"),
-    ("Peacock", "Birds", "peacock display tail"),
-    ("Vulture", "Birds", "vulture soaring"),
-    ("Albatross", "Birds", "albatross wingspan"),
-    ("Penguin", "Birds", "emperor penguin colony"),
-    ("Owl", "Birds", "great horned owl night"),
-    ("Flamingo Courtship", "Birds", "flamingo dance"),
-    # --- Insects & Arachnids ---------------------------------------------------------------
-    ("Leafcutter Ant", "Insects", "leafcutter ant colony"),
-    ("Orb Weaver Spider", "Insects", "spider web building"),
-    ("Praying Mantis", "Insects", "mantis strike"),
-    ("Bumblebee", "Insects", "bumblebee pollination"),
-    ("Dragonfly", "Insects", "dragonfly flight"),
-    ("Firefly", "Insects", "firefly bioluminescence"),
-    ("Atlas Moth", "Insects", "atlas moth largest"),
-    ("Bullet Ant", "Insects", "bullet ant"),
+    ("Gray Wolf", "Americas", "wolf pack hunt"),
+    ("Gorilla", "Africa", "gorilla silverback"),
+    ("Orca", "Ocean", "orca killer whale pod"),
 ]
 
-REGION_ORDER = ["Africa", "Asia", "Arctic", "Ocean", "Americas",
-                "Australia", "Islands", "Europe", "Rivers", "Reptiles",
-                "Birds", "Insects"]
+# Title-matching aliases — COMMON names: a source title matches the
+# animal if it contains ANY of these (single words anywhere, multi-word
+# as an adjacent phrase). Stemmed at match time ("Rhinos" → "rhino").
+ALIASES: dict[str, tuple[str, ...]] = {
+    "Lion": ("lion",),
+    "Leopard": ("leopard",),
+    "African Elephant": ("elephant",),
+    "Rhinoceros": ("rhinoceros", "rhino"),
+    "Cape Buffalo": ("buffalo",),
+    "Giraffe": ("giraffe",),
+    "Hippopotamus": ("hippopotamus", "hippo"),
+    "Nile Crocodile": ("crocodile", "croc"),
+    "Cheetah": ("cheetah",),
+    "Bengal Tiger": ("tiger",),
+    "Polar Bear": ("polar bear",),
+    "Grizzly Bear": ("grizzly", "brown bear", "kodiak"),
+    "Gray Wolf": ("wolf",),
+    "Gorilla": ("gorilla", "silverback"),
+    "Orca": ("orca", "killer whale"),
+}
 
-# Every episode explores an ANGLE — rotates so re-featured animals never
-# repeat in an exact way, and titles stay varied.
+# Scientific names — also accepted for title matching (a large share of
+# Wikimedia Commons wildlife files are titled only "Panthera pardus" /
+# "Ursus arctos" / "Orcinus orca"). Kept separate from ALIASES because
+# vehicle-number patterns ("Leopard 2A7") only ever use COMMON names, so
+# the sci words must stay exempt from that check ("Panthera leo 01" is
+# just a zoo's file numbering, not a tank).
+SCI_ALIASES: dict[str, tuple[str, ...]] = {
+    "Lion": ("panthera leo",),
+    "Leopard": ("panthera pardus",),
+    "African Elephant": ("loxodonta",),
+    "Rhinoceros": ("ceratotherium", "diceros"),
+    "Cape Buffalo": ("syncerus",),
+    "Giraffe": ("giraffa",),
+    "Nile Crocodile": ("crocodylus niloticus",),
+    "Cheetah": ("acinonyx",),
+    "Bengal Tiger": ("panthera tigris",),
+    "Polar Bear": ("ursus maritimus",),
+    "Grizzly Bear": ("ursus arctos",),
+    "Gray Wolf": ("canis lupus",),
+    "Orca": ("orcinus",),
+}
+
+# Rotating settings so the SAME animal keeps getting FRESH episodes:
+# different environments, different situations, different footage hunts.
+ENVIRONMENTS: dict[str, list[str]] = {
+    "Lion": [
+        "the Serengeti plains", "Kruger National Park", "the Masai Mara",
+        "the Okavango Delta", "a waterhole at dusk", "night on the savanna",
+    ],
+    "Leopard": [
+        "the Kruger bushveld", "the Sabi Sands riverine forest",
+        "a rocky outcrop lair", "the tree canopy", "a night prowl",
+        "the forest edge at dawn",
+    ],
+    "African Elephant": [
+        "Amboseli's dust plains", "the Okavango wetlands",
+        "a crowded waterhole", "a herd on migration",
+        "a river crossing at dusk", "the herd by moonlight",
+    ],
+    "Rhinoceros": [
+        "the open savanna", "a muddy wallow", "the thickets",
+        "night grazing under stars", "a waterhole showdown",
+        "the grasslands at dawn",
+    ],
+    "Cape Buffalo": [
+        "the open savanna", "a dusty herd march", "the river's edge",
+        "night at the waterhole", "the reeds and mud",
+        "a breeding herd on the move",
+    ],
+    "Giraffe": [
+        "the acacia savanna", "Etosha's open plains", "a riverine forest",
+        "the dry-season waterhole", "sunrise on the plains",
+        "a tower at full stretch",
+    ],
+    "Hippopotamus": [
+        "a crowded river pool", "night grazing on land",
+        "the Zambezi shallows", "a territorial bull battle",
+        "a mud wallow at noon", "the river at dusk",
+    ],
+    "Nile Crocodile": [
+        "the river's edge", "a crossing-point ambush",
+        "the sun-baked sandbank", "night eyes on the water",
+        "the swamp shallows", "a basking wallow",
+    ],
+    "Cheetah": [
+        "the open grassland", "the Serengeti plains",
+        "a termite-mound lookout", "cubs hidden in the grass",
+        "a full-speed sprint", "the savanna at golden hour",
+    ],
+    "Bengal Tiger": [
+        "the mangrove swamps", "a jungle waterhole",
+        "the tall grass territory", "a night prowl",
+        "the monsoon forest", "a river swim",
+    ],
+    "Polar Bear": [
+        "the drifting sea ice", "the Arctic coastline",
+        "a hunt on the ice", "the summer tundra",
+        "a mother and cubs", "the frozen north at dusk",
+    ],
+    "Grizzly Bear": [
+        "a salmon river run", "the alpine meadows",
+        "the temperate rainforest", "a berry hillside in autumn",
+        "a mother and cubs", "the mountains at dawn",
+    ],
+    "Gray Wolf": [
+        "a snowy winter hunt", "the northern forest",
+        "the pack's meeting grounds", "a hunt in deep snow",
+        "the wilderness at dusk", "howling under the moon",
+    ],
+    "Gorilla": [
+        "the mountain mist forest", "a silverback's showdown",
+        "the family group at rest", "a forest clearing",
+        "a nesting site at dusk", "the volcanic slopes",
+    ],
+    "Orca": [
+        "a hunting pod on the move", "the icy fjords",
+        "a coordinated hunt", "the open ocean swell",
+        "a family pod at play", "the coast at sunset",
+    ],
+}
+
+# Every episode explores an ANGLE — rotates so the same animal never
+# repeats "in an exact way", and titles stay varied across episodes.
 ANGLES: list[tuple[str, str]] = [
     ("hunting and feeding", "how this animal hunts and eats"),
     ("family life", "mating, raising the young, and the bonds that keep them alive"),
@@ -194,6 +182,10 @@ ANGLES: list[tuple[str, str]] = [
     ("predators and prey", "the enemies it fears and the prey it takes"),
     ("speed and power", "the physical limits of its speed and strength"),
     ("intelligence and communication", "how it thinks, learns, and talks to its kind"),
+    ("epic battles and rivals", "its most intense showdowns with rivals and enemies"),
+    ("night life", "what it does under the cover of darkness"),
+    ("anatomy up close", "the body design and weapons that make it a marvel of evolution"),
+    ("conservation and the future", "the fight to protect it and what its future looks like"),
 ]
 
 
@@ -204,6 +196,8 @@ class EpisodeTopic:
     region: str
     angle_title: str       # e.g. "hunting and feeding"
     angle_brief: str       # e.g. "how this animal hunts and eats"
+    environment: str = ""  # rotating setting, e.g. "the Serengeti plains"
+    episode_number: int = 1  # which episode this is for THIS animal
 
 
 def _covered_names(data: dict, cooldown_days: int) -> set[str]:
@@ -221,69 +215,84 @@ def _covered_names(data: dict, cooldown_days: int) -> set[str]:
     return out
 
 
-def _recent_regions(data: dict, take: int = 3) -> list[str]:
-    """Regions of the last few episodes — used to rotate away from them."""
-    out = []
-    for entry in reversed(data.get("covered_animals", [])):
-        r = str(entry.get("region", "")).strip()
-        if r and r not in out:
-            out.append(r)
-        if len(out) >= take:
-            break
-    return out
+def _features_of(data: dict, animal: str) -> list[dict]:
+    """Past episodes of one animal (oldest first)."""
+    key = animal.strip().lower()
+    return [e for e in data.get("covered_animals", [])
+            if str(e.get("animal", "")).strip().lower() == key]
 
 
 def pick_topic(data: dict, settings: Settings,
                rng: random.Random | None = None,
-               exclude: set[str] | None = None) -> EpisodeTopic:
-    """Choose (animal, angle) for this episode.
+               exclude: set[str] | None = None,
+               scores: dict[str, float] | None = None) -> EpisodeTopic:
+    """Choose (animal, angle, environment) for this episode.
 
-    Priority: never-covered animals first, rotating the world regions; when
-    everything is on cooldown, the least-recently-featured animal returns
-    with a FRESH angle. `exclude` (lowercase names) lets a single run skip
-    animals whose footage hunt already came up dry this slot.
+    POPULARITY-DRIVEN: `scores` maps animal (lowercase) → channel
+    performance score (views + weighted likes from our own uploads —
+    see agent/popularity.py). Eligible animals are drawn by weighted
+    random, so the most watched/liked animals are created more than
+    others while everything still rotates. Animals with no history get
+    the median score, so unseen giants are still explored.
+
+    An animal is only eligible again after ANIMAL_COOLDOWN_DAYS (short —
+    repeats are the point, but never twice within days). `exclude`
+    (lowercase names) lets a single run skip animals whose footage hunt
+    already came up dry this slot.
     """
     rng = rng or random.Random()
+    scores = scores or {}
     covered = _covered_names(data, settings.animal_cooldown_days)
     skip = covered | {x.lower() for x in (exclude or set())}
 
-    # rotate regions: skip the regions of the last episodes
-    recent = set(_recent_regions(data))
-    region_cycle = ([r for r in REGION_ORDER if r not in recent]
-                    + [r for r in REGION_ORDER if r in recent])
+    eligible = [(n, reg, h) for (n, reg, h) in CATALOG
+                if n.lower() not in skip]
+    if eligible:
+        # weighted random over channel performance: score ratio to the
+        # median, damped and clipped — the most watched/liked animals are
+        # created MORE than others (up to ~4x) while untested giants
+        # still get explored at weight 1.0.
+        known = sorted(v for v in scores.values() if v > 0)
+        base = known[len(known) // 2] if known else 0.0
 
-    for region in region_cycle:
-        pool = [(n, h) for (n, reg, h) in CATALOG
-                if reg == region and n.lower() not in skip]
-        if pool:
-            name, hints = rng.choice(pool)
-            idx = next(i for i, (n, _, _) in enumerate(CATALOG)
-                       if n == name)
-            break
+        def _weight(animal_name: str) -> float:
+            s = scores.get(animal_name.lower())
+            if not s or s <= 0 or base <= 0:
+                return 1.0                      # untested → explore
+            return min(4.0, max(0.5, (s / base) ** 0.75))
+
+        weights = [_weight(n) for (n, _r, _h) in eligible]
+        name, region, hints = rng.choices(eligible, weights=weights, k=1)[0]
+        picked_by = "popularity-weighted"
     else:
-        # everything covered (or excluded) → least-recently-featured animal
-        # that is not in `skip`, fresh angle
+        # everything on cooldown (or excluded) → least-recently-featured
+        # animal that is not excluded, fresh angle
+        hard_skip = {x.lower() for x in (exclude or set())}
         ledger = {e.get("animal", "").lower(): e
                   for e in data.get("covered_animals", [])}
         order = sorted(
-            (t for t in CATALOG if t[0].lower() not in skip),
+            (t for t in CATALOG if t[0].lower() not in hard_skip),
             key=lambda t: str(ledger.get(t[0].lower(), {}).get("date", "0000")))
         if not order:
-            order = CATALOG          # nothing left — serve any animal
-        name, reg, hints = order[0]
-        idx = next(i for i, (n, _, _) in enumerate(CATALOG) if n == name)
+            order = CATALOG          # nothing left — serve any giant
+        name, region, hints = order[0]
+        picked_by = "least-recently-featured"
 
-    # angle rotation: prefer an angle this animal has NOT had recently
-    used_angles: set[str] = set()
-    for e in data.get("covered_animals", []):
-        if str(e.get("animal", "")).strip().lower() == name.lower():
-            used_angles.add(str(e.get("angle", "")))
-    angle_pool = [(a, b) for (a, b) in ANGLES if a not in used_angles] or ANGLES
-    angle_title, angle_brief = angle_pool[len(data.get("covered_animals", []))
-                                          % len(angle_pool)]
+    # variety for REPEATS: fresh angle + rotating environment + episode #
+    feats = _features_of(data, name)
+    episode_number = len(feats) + 1
+    used_angles = {str(e.get("angle", "")) for e in feats}
+    angle_pool = [(a, b) for (a, b) in ANGLES if a not in used_angles] \
+        or ANGLES
+    angle_title, angle_brief = angle_pool[rng.randrange(len(angle_pool))]
+    envs = ENVIRONMENTS.get(name, ["the wild"])
+    environment = envs[(episode_number - 1) % len(envs)]
 
-    log_hint = f"[{CATALOG[idx][1]}] #{idx + 1} of {len(CATALOG)}"
-    print(f"TOPIC: {name} — {log_hint} — angle: {angle_title}")
-    return EpisodeTopic(animal=name, hints=hints,
-                        region=CATALOG[idx][1],
-                        angle_title=angle_title, angle_brief=angle_brief)
+    log_hint = (f"[{region}] episode #{episode_number} for this animal — "
+                f"setting: {environment}")
+    print(f"TOPIC: {name} — {log_hint} — angle: {angle_title} "
+          f"({picked_by})")
+    return EpisodeTopic(animal=name, hints=hints, region=region,
+                        angle_title=angle_title, angle_brief=angle_brief,
+                        environment=environment,
+                        episode_number=episode_number)

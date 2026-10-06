@@ -18,7 +18,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import animals as animals_mod, footage as footage_mod, qa, state as state_mod
+from . import animals as animals_mod, footage as footage_mod, popularity, qa, state as state_mod
 from .config import OUTPUT_DIR, ROOT, Settings, WORK_DIR
 from .scriptgen import generate_script
 from .tts import synth_sections
@@ -166,6 +166,16 @@ def main(argv: list[str] | None = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     rng = random.Random()
 
+    # 1c. CHANNEL POPULARITY — which animals earned the most views + likes
+    # ("the most liked/watched videos are the ones you should create more
+    # than others"). Empty on any failure → uniform rotation fallback.
+    try:
+        scores, past_titles = popularity.channel_performance(st, settings)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("popularity scoring unavailable (%s) — uniform "
+                    "rotation", exc)
+        scores, past_titles = {}, {}
+
     # 2+3. Pick the animal and hunt REAL footage — with RETRIES. The strict
     # relevance gate can come up dry for an obscure animal (every candidate
     # was off-topic or a machine named after it); a slot never dies for one
@@ -185,11 +195,18 @@ def main(argv: list[str] | None = None) -> int:
                 angle_brief=animals_mod.ANGLES[0][1])
         else:
             topic = animals_mod.pick_topic(st, settings, rng=rng,
-                                           exclude=set(attempted))
+                                           exclude=set(attempted),
+                                           scores=scores)
         attempted.append(topic.animal.lower())
         needed = settings.target_minutes * 60.0
+        # block every source video already used in a PAST episode of this
+        # animal — repeats are always cut from different footage
+        used_before = set(
+            (st.get("used_sources") or {})          # type: ignore[arg-type]
+            .get(topic.animal.lower(), []))
         sources = footage_mod.collect_footage(topic, settings,
-                                              out_dir / "footage", needed)
+                                              out_dir / "footage", needed,
+                                              used_before=used_before)
         footage_total = sum(s.used_seconds for s in sources)
         if footage_total >= settings.min_footage_minutes * 60:
             break
@@ -216,8 +233,10 @@ def main(argv: list[str] | None = None) -> int:
     rounds = max(1, settings.script_retry_rounds)
     script_checks = []
     script = None
+    my_past_titles = past_titles.get(topic.animal.lower(), [])
     for rnd in range(1, rounds + 1):
-        script = generate_script(topic, settings, footage_total)
+        script = generate_script(topic, settings, footage_total,
+                                 past_titles=my_past_titles)
         log.info("Script ready — round %d/%d (%d words, %d sections, "
                  "source=%s)", rnd, rounds, script.word_count,
                  len(script.sections), script.source)
@@ -401,7 +420,9 @@ def main(argv: list[str] | None = None) -> int:
     state_path = Path(settings.state_file) if settings.state_file \
         else ROOT / "state.json"
     if video_id and not settings.keep_state:
-        state_mod.advance(state_path, video_url, video_id, topic, settings)
+        state_mod.advance(state_path, video_url, video_id, topic, settings,
+                          source_urls=[s.url for s in sources
+                                       if s.segments])
     elif settings.keep_state:
         log.info("State not advanced (--keep-state).")
 
