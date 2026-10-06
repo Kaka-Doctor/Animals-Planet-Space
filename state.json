@@ -1,11 +1,11 @@
 {
-  "completed": 5,
-  "last_run": "2026-10-06T12:09:05+00:00",
+  "completed": 6,
+  "last_run": "2026-10-06T22:49:33+00:00",
   "last_video": {
-    "id": "BNRVPI1kl0E",
-    "url": "https://youtu.be/BNRVPI1kl0E"
+    "id": "TvAGiTVcmhI",
+    "url": "https://youtu.be/TvAGiTVcmhI"
   },
-  "last_post_date": "2026-10-06",
+  "last_post_date": "2026-10-07",
   "post_log": [
     {
       "at": "2026-10-04T03:59:07+00:00",
@@ -31,6 +31,11 @@
       "at": "2026-10-06T12:09:05+00:00",
       "video_id": "BNRVPI1kl0E",
       "url": "https://youtu.be/BNRVPI1kl0E"
+    },
+    {
+      "at": "2026-10-06T22:49:33+00:00",
+      "video_id": "TvAGiTVcmhI",
+      "url": "https://youtu.be/TvAGiTVcmhI"
     }
   ],
   "covered_animals": [
@@ -69,6 +74,14 @@
       "environment": "the mountain mist forest",
       "date": "2026-10-06T12:09:05+00:00",
       "video_id": "BNRVPI1kl0E"
+    },
+    {
+      "animal": "Nile Crocodile",
+      "region": "Africa",
+      "angle": "family life",
+      "environment": "the river's edge",
+      "date": "2026-10-06T22:49:33+00:00",
+      "video_id": "TvAGiTVcmhI"
     }
   ],
   "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes.",
@@ -84,6 +97,11 @@
       "https://commons.wikimedia.org/wiki/File:Western_lowland_gorillas_(mom_and_baby).webm",
       "https://commons.wikimedia.org/wiki/File:Westliche_Flachland-Gorillas_Abeeku_und_Kibara_(Zoo_Leipzig).webm",
       "https://commons.wikimedia.org/wiki/File:007_Silverback_Mountain_gorilla_eating_at_Bwindi_Impenetrable_Forest_National_Park_Video_by_Giles_Laurent.webm"
+    ],
+    "nile crocodile": [
+      "https://commons.wikimedia.org/wiki/File:Nile_Crocodile_(Crocodylus_niloticus)_swallowing_a_Tilapia.webm",
+      "https://commons.wikimedia.org/wiki/File:Nile_Crocodile_(Crocodylus_niloticus)_swallowing_the_head_of_a_big_Tilapia.webm",
+      "https://commons.wikimedia.org/wiki/File:Crocodile_Facts-_19_Facts_about_Nile_Crocodiles.webm"
     ]
   }
 }
