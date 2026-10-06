@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-05T15:00:08+00:00",
-  "animal": "Moray Eel",
-  "region": "Ocean",
+  "generated_at": "2026-10-06T12:09:05+00:00",
+  "animal": "Gorilla",
+  "region": "Africa",
   "angle": "habitat and territory",
-  "title": "MORAY EEL: The Secret Ruler of the Coral Crevice | Wildlife Documentary",
-  "description": "Discover how the moray eel dominates its underwater territory. From its hidden rocky fortress to its terrifying second set of jaws, witness the ultimate ambush predator of the coral reef.\n\nANIMAL: Moray Eel \u2014 today's angle: habitat and territory.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Shadows in the Reef\n0:45  The Perfect Fortress\n1:21  The Rhythm of the Hunt\n1:58  The Alien",
+  "title": "GORILLA: Ruling the Mist-Shrouded Volcanic Peaks | Wildlife Documentary",
+  "description": "Journey deep into the high-altitude cloud forests of Africa to witness the incredible life of the mountain gorilla. See how the mighty silverback leads his family through freezing temperatures, rugged terrain, and dense vegetation to rule his misty mountain kingdom. Discover the unique physical adaptations and social structures that keep this gentle giant safe in the wild.\n\nANIMAL: Gorilla \u2014 today's angle: habitat and territory.\nAll footage in this episode is REAL wildlife video, reused legally ",
   "tags": [
     "wildlife",
     "animals",
@@ -14,84 +14,100 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "moray eel",
-    "moray"
+    "gorilla",
+    "gorilla"
   ],
   "footage_sources": [
     {
       "provider": "commons",
-      "title": "Gymnothorax isingteena - spotted moray eel - aug 29 2016.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Gymnothorax_isingteena_-_spotted_moray_eel_-_aug_29_2016.webm",
-      "license": "Wikimedia Commons (CC BY-SA 4.0)",
-      "views": 0,
-      "seconds_used": 18.9
-    },
-    {
-      "provider": "commons",
-      "title": "Moray eel in the Maldives.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Moray_eel_in_the_Maldives.webm",
+      "title": "Three year old western lowland gorilla at Los Angeles Zoo.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Three_year_old_western_lowland_gorilla_at_Los_Angeles_Zoo.webm",
       "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
-      "seconds_used": 27.2
+      "seconds_used": 18.6
     },
     {
       "provider": "commons",
-      "title": "Yellowmargin Moray Eel at Kealakekua .webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Yellowmargin_Moray_Eel_at_Kealakekua_.webm",
+      "title": "Two year old western lowland gorilla eating at Los Angeles Zoo.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Two_year_old_western_lowland_gorilla_eating_at_Los_Angeles_Zoo.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 24.0
+    },
+    {
+      "provider": "commons",
+      "title": "Mountain gorilla (Gorilla beringei beringei) climbing a tree.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Mountain_gorilla_(Gorilla_beringei_beringei)_climbing_a_tree.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 26.3
+    },
+    {
+      "provider": "commons",
+      "title": "Mountain gorilla (Gorilla beringei beringei) and his family.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Mountain_gorilla_(Gorilla_beringei_beringei)_and_his_family.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 23.8
+    },
+    {
+      "provider": "commons",
+      "title": "Wild Western Lowland gorilla and his offspring foraging for figs.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Wild_Western_Lowland_gorilla_and_his_offspring_foraging_for_figs.webm",
+      "license": "Wikimedia Commons (CC BY 4.0)",
+      "views": 0,
+      "seconds_used": 12.2
+    },
+    {
+      "provider": "commons",
+      "title": "Gorillas in Ueno Zoo - 2009 Aug.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Gorillas_in_Ueno_Zoo_-_2009_Aug.webm",
       "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 58.0
+      "seconds_used": 34.4
     },
     {
       "provider": "commons",
-      "title": "Steindachner's moray eel, Gymnothorax steindachneri.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Steindachner's_moray_eel,_Gymnothorax_steindachneri.webm",
+      "title": "Baby gorilla.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Baby_gorilla.webm",
       "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
       "seconds_used": 70.0
     },
     {
       "provider": "commons",
-      "title": "Moray eel.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Moray_eel.webm",
-      "license": "Wikimedia Commons (CC BY-SA 4.0)",
+      "title": "Western lowland gorillas (mom and baby).webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Western_lowland_gorillas_(mom_and_baby).webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
-      "seconds_used": 7.1
+      "seconds_used": 70.0
     },
     {
       "provider": "commons",
-      "title": "Aquarium of Cattolica - Moray eels.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Aquarium_of_Cattolica_-_Moray_eels.webm",
+      "title": "Westliche Flachland-Gorillas Abeeku und Kibara (Zoo Leipzig).webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Westliche_Flachland-Gorillas_Abeeku_und_Kibara_(Zoo_Leipzig).webm",
       "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 8.9
+      "seconds_used": 6.3
     },
     {
       "provider": "commons",
-      "title": "Moray Eels at the Shedd Aquarium, Chicago.webmhd.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Moray_Eels_at_the_Shedd_Aquarium,_Chicago.webmhd.webm",
-      "license": "Wikimedia Commons (CC BY-SA 3.0)",
+      "title": "007 Silverback Mountain gorilla eating at Bwindi Impenetrable Forest National Park Video by Giles Laurent.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:007_Silverback_Mountain_gorilla_eating_at_Bwindi_Impenetrable_Forest_National_Park_Video_by_Giles_Laurent.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 28.8
-    },
-    {
-      "provider": "archive",
-      "title": "Estuarine moray eel (Gymnothorax tile)",
-      "url": "https://archive.org/details/Flickr-25067992192",
-      "license": "CC BY-NC 2.0",
-      "views": 26,
-      "seconds_used": 15.4
+      "seconds_used": 13.0
     }
   ],
-  "video_id": "6SbfV4k6tLA",
-  "video_url": "https://youtu.be/6SbfV4k6tLA",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_05_1458.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_05_1458_thumb.jpg",
-  "duration_seconds": 240.4,
-  "footage_seconds": 234.4,
-  "footage_ratio": 0.975,
+  "video_id": "BNRVPI1kl0E",
+  "video_url": "https://youtu.be/BNRVPI1kl0E",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_06_1206.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_06_1206_thumb.jpg",
+  "duration_seconds": 326.6,
+  "footage_seconds": 320.4,
+  "footage_ratio": 0.981,
   "script_source": "gemini:gemini-3.5-flash",
-  "script_words": 677,
+  "script_words": 1008,
   "qa_passed": true,
   "uploaded": true
 }

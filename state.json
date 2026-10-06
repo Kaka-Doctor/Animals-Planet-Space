@@ -1,11 +1,11 @@
 {
-  "completed": 4,
-  "last_run": "2026-10-05T15:00:08+00:00",
+  "completed": 5,
+  "last_run": "2026-10-06T12:09:05+00:00",
   "last_video": {
-    "id": "6SbfV4k6tLA",
-    "url": "https://youtu.be/6SbfV4k6tLA"
+    "id": "BNRVPI1kl0E",
+    "url": "https://youtu.be/BNRVPI1kl0E"
   },
-  "last_post_date": "2026-10-05",
+  "last_post_date": "2026-10-06",
   "post_log": [
     {
       "at": "2026-10-04T03:59:07+00:00",
@@ -26,6 +26,11 @@
       "at": "2026-10-05T15:00:08+00:00",
       "video_id": "6SbfV4k6tLA",
       "url": "https://youtu.be/6SbfV4k6tLA"
+    },
+    {
+      "at": "2026-10-06T12:09:05+00:00",
+      "video_id": "BNRVPI1kl0E",
+      "url": "https://youtu.be/BNRVPI1kl0E"
     }
   ],
   "covered_animals": [
@@ -56,7 +61,29 @@
       "angle": "habitat and territory",
       "date": "2026-10-05T15:00:08+00:00",
       "video_id": "6SbfV4k6tLA"
+    },
+    {
+      "animal": "Gorilla",
+      "region": "Africa",
+      "angle": "habitat and territory",
+      "environment": "the mountain mist forest",
+      "date": "2026-10-06T12:09:05+00:00",
+      "video_id": "BNRVPI1kl0E"
     }
   ],
-  "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes."
+  "note": "Wildlife documentaries, twice a day (~every 12h). post_log keeps recent upload times for the cadence guard; covered_animals is the animal ledger (dedup + angle rotation) powering no-exact-repeat episodes.",
+  "used_sources": {
+    "gorilla": [
+      "https://commons.wikimedia.org/wiki/File:Three_year_old_western_lowland_gorilla_at_Los_Angeles_Zoo.webm",
+      "https://commons.wikimedia.org/wiki/File:Two_year_old_western_lowland_gorilla_eating_at_Los_Angeles_Zoo.webm",
+      "https://commons.wikimedia.org/wiki/File:Mountain_gorilla_(Gorilla_beringei_beringei)_climbing_a_tree.webm",
+      "https://commons.wikimedia.org/wiki/File:Mountain_gorilla_(Gorilla_beringei_beringei)_and_his_family.webm",
+      "https://commons.wikimedia.org/wiki/File:Wild_Western_Lowland_gorilla_and_his_offspring_foraging_for_figs.webm",
+      "https://commons.wikimedia.org/wiki/File:Gorillas_in_Ueno_Zoo_-_2009_Aug.webm",
+      "https://commons.wikimedia.org/wiki/File:Baby_gorilla.webm",
+      "https://commons.wikimedia.org/wiki/File:Western_lowland_gorillas_(mom_and_baby).webm",
+      "https://commons.wikimedia.org/wiki/File:Westliche_Flachland-Gorillas_Abeeku_und_Kibara_(Zoo_Leipzig).webm",
+      "https://commons.wikimedia.org/wiki/File:007_Silverback_Mountain_gorilla_eating_at_Bwindi_Impenetrable_Forest_National_Park_Video_by_Giles_Laurent.webm"
+    ]
+  }
 }
