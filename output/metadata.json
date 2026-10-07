@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-06T22:49:33+00:00",
-  "animal": "Nile Crocodile",
+  "generated_at": "2026-10-07T14:01:18+00:00",
+  "animal": "Leopard",
   "region": "Africa",
-  "angle": "family life",
-  "title": "NILE CROCODILE: Family Secrets and River Life | Wildlife Documentary",
-  "description": "Witness the surprisingly tender side of Africa's most feared predator as we explore the family life and survival strategies of the Nile Crocodile.\n\nANIMAL: Nile Crocodile \u2014 today's angle: family life.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  The Ancient Sentinel\n0:50  Dominance at the River Edge\n1:44  Vibrations of the Heart\n2:40  The Secret Nursery\n3:37  A Mother's Gentle Tou",
+  "angle": "conservation and the future",
+  "title": "LEOPARD: Guardians of the Sabi Sands Riverine Forest | Wildlife Documentary",
+  "description": "Join us as we explore the vital role of the leopard in the Sabi Sands ecosystem. Discover how these elusive predators navigate a changing world and what their future holds in the heart of Africa.\n\nANIMAL: Leopard \u2014 today's angle: conservation and the future.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wild\n0:39  Architects of the Canopy\n1:20  Built for Pure Power\n1",
   "tags": [
     "wildlife",
     "animals",
@@ -14,45 +14,100 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "nile crocodile",
-    "nile",
-    "crocodile"
+    "leopard",
+    "leopard"
   ],
   "footage_sources": [
     {
       "provider": "commons",
-      "title": "Nile Crocodile (Crocodylus niloticus) swallowing a Tilapia.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Nile_Crocodile_(Crocodylus_niloticus)_swallowing_a_Tilapia.webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "title": "Leopard (Panthera pardus), in Uttarakhand, India.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus),_in_Uttarakhand,_India.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 13.5
+      "seconds_used": 13.9
     },
     {
       "provider": "commons",
-      "title": "Nile Crocodile (Crocodylus niloticus) swallowing the head of a big Tilapia.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Nile_Crocodile_(Crocodylus_niloticus)_swallowing_the_head_of_a_big_Tilapia.webm",
+      "title": "Leopard (Panthera pardus) male ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_male_....webm",
       "license": "Wikimedia Commons (CC BY-SA 2.0)",
       "views": 0,
-      "seconds_used": 34.5
+      "seconds_used": 10.2
     },
     {
       "provider": "commons",
-      "title": "Crocodile Facts- 19 Facts about Nile Crocodiles.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Crocodile_Facts-_19_Facts_about_Nile_Crocodiles.webm",
+      "title": "Leopard (Panthera pardus) female resting in a tree ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_female_resting_in_a_tree_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 7.5
+    },
+    {
+      "provider": "commons",
+      "title": "Female leopard (Panthera pardus) with two cubs.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Female_leopard_(Panthera_pardus)_with_two_cubs.webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 27.6
+    },
+    {
+      "provider": "commons",
+      "title": "Leopard (Panthera pardus) with its kill in Masai Mara.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_with_its_kill_in_Masai_Mara.webm",
+      "license": "Wikimedia Commons (CC BY 2.0)",
+      "views": 0,
+      "seconds_used": 9.6
+    },
+    {
+      "provider": "commons",
+      "title": "Day 40 - Leopard (Panthera pardus) male licking its fur, after killing a warthog ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Day_40_-_Leopard_(Panthera_pardus)_male_licking_its_fur,_after_killing_a_warthog_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 11.5
+    },
+    {
+      "provider": "commons",
+      "title": "Wuppertal - Zoo - Panthera pardus fusca 01 (1) ies.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Wuppertal_-_Zoo_-_Panthera_pardus_fusca_01_(1)_ies.webm",
+      "license": "Wikimedia Commons (CC BY-SA 3.0)",
+      "views": 0,
+      "seconds_used": 33.4
+    },
+    {
+      "provider": "commons",
+      "title": "2023-08-18 ZOO LJUBLJANA - Panthera pardus saxicolor.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:2023-08-18_ZOO_LJUBLJANA_-_Panthera_pardus_saxicolor.webm",
       "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
-      "seconds_used": 252.0
+      "seconds_used": 6.7
+    },
+    {
+      "provider": "commons",
+      "title": "2023-08-18 ZOO LJUBLJANA - Panthera pardus saxicolor 6.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:2023-08-18_ZOO_LJUBLJANA_-_Panthera_pardus_saxicolor_6.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 41.9
+    },
+    {
+      "provider": "commons",
+      "title": "2023-08-18 ZOO LJUBLJANA - Panthera pardus saxicolor 8.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:2023-08-18_ZOO_LJUBLJANA_-_Panthera_pardus_saxicolor_8.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
+      "views": 0,
+      "seconds_used": 47.5
     }
   ],
-  "video_id": "TvAGiTVcmhI",
-  "video_url": "https://youtu.be/TvAGiTVcmhI",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_06_2248.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_06_2248_thumb.jpg",
-  "duration_seconds": 306.0,
-  "footage_seconds": 300.0,
-  "footage_ratio": 0.98,
+  "video_id": "gTu_UfYq1EU",
+  "video_url": "https://youtu.be/gTu_UfYq1EU",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_07_1400.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_07_1400_thumb.jpg",
+  "duration_seconds": 215.8,
+  "footage_seconds": 209.6,
+  "footage_ratio": 0.972,
   "script_source": "gemini:gemini-3.1-flash-lite",
-  "script_words": 1135,
+  "script_words": 794,
   "qa_passed": true,
   "uploaded": true
 }
