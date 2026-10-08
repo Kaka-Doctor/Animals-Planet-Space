@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-07T14:01:18+00:00",
-  "animal": "Leopard",
+  "generated_at": "2026-10-08T23:30:19+00:00",
+  "animal": "African Elephant",
   "region": "Africa",
-  "angle": "conservation and the future",
-  "title": "LEOPARD: Guardians of the Sabi Sands Riverine Forest | Wildlife Documentary",
-  "description": "Join us as we explore the vital role of the leopard in the Sabi Sands ecosystem. Discover how these elusive predators navigate a changing world and what their future holds in the heart of Africa.\n\nANIMAL: Leopard \u2014 today's angle: conservation and the future.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Wild\n0:39  Architects of the Canopy\n1:20  Built for Pure Power\n1",
+  "angle": "speed and power",
+  "title": "AFRICAN ELEPHANT: Raw Power and Speed on the Dust Plains | Wildlife Documentary",
+  "description": "Witness the incredible physical limits of the African Elephant in the harsh Amboseli dust plains. Experience the unmatched strength and surprising speed of Earth's largest land mammal in this gripping wildlife special.\n\nANIMAL: African Elephant \u2014 today's angle: speed and power.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Dust Plains\n0:43  The Mechanics of Muscle\n1:",
   "tags": [
     "wildlife",
     "animals",
@@ -14,100 +14,101 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "leopard",
-    "leopard"
+    "african elephant",
+    "african",
+    "elephant"
   ],
   "footage_sources": [
     {
       "provider": "commons",
-      "title": "Leopard (Panthera pardus), in Uttarakhand, India.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus),_in_Uttarakhand,_India.webm",
-      "license": "Wikimedia Commons (CC BY-SA 4.0)",
-      "views": 0,
-      "seconds_used": 13.9
-    },
-    {
-      "provider": "commons",
-      "title": "Leopard (Panthera pardus) male ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_male_....webm",
+      "title": "Savanna Elephant (Loxodonta africana) bull drinking from a rain puddle.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Savanna_Elephant_(Loxodonta_africana)_bull_drinking_from_a_rain_puddle.webm",
       "license": "Wikimedia Commons (CC BY-SA 2.0)",
       "views": 0,
-      "seconds_used": 10.2
+      "seconds_used": 16.4
     },
     {
       "provider": "commons",
-      "title": "Leopard (Panthera pardus) female resting in a tree ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_female_resting_in_a_tree_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 7.5
-    },
-    {
-      "provider": "commons",
-      "title": "Female leopard (Panthera pardus) with two cubs.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Female_leopard_(Panthera_pardus)_with_two_cubs.webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 27.6
-    },
-    {
-      "provider": "commons",
-      "title": "Leopard (Panthera pardus) with its kill in Masai Mara.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Leopard_(Panthera_pardus)_with_its_kill_in_Masai_Mara.webm",
+      "title": "A young African elephant resting.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:A_young_African_elephant_resting.webm",
       "license": "Wikimedia Commons (CC BY 2.0)",
       "views": 0,
-      "seconds_used": 9.6
+      "seconds_used": 42.5
     },
     {
       "provider": "commons",
-      "title": "Day 40 - Leopard (Panthera pardus) male licking its fur, after killing a warthog ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Day_40_-_Leopard_(Panthera_pardus)_male_licking_its_fur,_after_killing_a_warthog_....webm",
+      "title": "African elephant (Loxodonta africana) rumbling.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:African_elephant_(Loxodonta_africana)_rumbling.webm",
       "license": "Wikimedia Commons (CC BY-SA 2.0)",
       "views": 0,
-      "seconds_used": 11.5
+      "seconds_used": 8.0
     },
     {
       "provider": "commons",
-      "title": "Wuppertal - Zoo - Panthera pardus fusca 01 (1) ies.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Wuppertal_-_Zoo_-_Panthera_pardus_fusca_01_(1)_ies.webm",
+      "title": "Wuppertal - Zoo - Loxodonta africana 03 (1) ies.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Wuppertal_-_Zoo_-_Loxodonta_africana_03_(1)_ies.webm",
       "license": "Wikimedia Commons (CC BY-SA 3.0)",
       "views": 0,
-      "seconds_used": 33.4
+      "seconds_used": 21.1
     },
     {
       "provider": "commons",
-      "title": "2023-08-18 ZOO LJUBLJANA - Panthera pardus saxicolor.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:2023-08-18_ZOO_LJUBLJANA_-_Panthera_pardus_saxicolor.webm",
-      "license": "Wikimedia Commons (CC BY 3.0)",
+      "title": "010 Baby African bush elephant resting its head at Queen Elizabeth National Park Video by Giles Laurent.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:010_Baby_African_bush_elephant_resting_its_head_at_Queen_Elizabeth_National_Park_Video_by_Giles_Laurent.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 6.7
+      "seconds_used": 6.0
     },
     {
       "provider": "commons",
-      "title": "2023-08-18 ZOO LJUBLJANA - Panthera pardus saxicolor 6.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:2023-08-18_ZOO_LJUBLJANA_-_Panthera_pardus_saxicolor_6.webm",
-      "license": "Wikimedia Commons (CC BY 3.0)",
+      "title": "African bush elephants (Loxodonta africana).webm",
+      "url": "https://commons.wikimedia.org/wiki/File:African_bush_elephants_(Loxodonta_africana).webm",
+      "license": "Wikimedia Commons (CC BY 2.0)",
       "views": 0,
-      "seconds_used": 41.9
+      "seconds_used": 40.0
     },
     {
       "provider": "commons",
-      "title": "2023-08-18 ZOO LJUBLJANA - Panthera pardus saxicolor 8.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:2023-08-18_ZOO_LJUBLJANA_-_Panthera_pardus_saxicolor_8.webm",
-      "license": "Wikimedia Commons (CC BY 3.0)",
+      "title": "African elephants (Loxodonta africana) splashing.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:African_elephants_(Loxodonta_africana)_splashing.webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
       "views": 0,
-      "seconds_used": 47.5
+      "seconds_used": 41.7
+    },
+    {
+      "provider": "commons",
+      "title": "Savanna Elephant (Loxodonta africana) crossing Olifants river ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Savanna_Elephant_(Loxodonta_africana)_crossing_Olifants_river_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 10.1
+    },
+    {
+      "provider": "commons",
+      "title": "Savanna Elephant (Loxodonta africana) bull ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Savanna_Elephant_(Loxodonta_africana)_bull_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 22.1
+    },
+    {
+      "provider": "commons",
+      "title": "Savanna Elephant (Loxodonta africana) big bull coming a little too close ....webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Savanna_Elephant_(Loxodonta_africana)_big_bull_coming_a_little_too_close_....webm",
+      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "views": 0,
+      "seconds_used": 21.3
     }
   ],
-  "video_id": "gTu_UfYq1EU",
-  "video_url": "https://youtu.be/gTu_UfYq1EU",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_07_1400.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_07_1400_thumb.jpg",
-  "duration_seconds": 215.8,
-  "footage_seconds": 209.6,
-  "footage_ratio": 0.972,
-  "script_source": "gemini:gemini-3.1-flash-lite",
-  "script_words": 794,
+  "video_id": "6lt5l1OGFkM",
+  "video_url": "https://youtu.be/6lt5l1OGFkM",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_08_2329.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_08_2329_thumb.jpg",
+  "duration_seconds": 235.2,
+  "footage_seconds": 229.2,
+  "footage_ratio": 0.974,
+  "script_source": "gemini:gemini-3.5-flash",
+  "script_words": 738,
   "qa_passed": true,
   "uploaded": true
 }
