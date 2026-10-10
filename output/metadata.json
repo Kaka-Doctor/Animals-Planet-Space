@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-09T13:53:17+00:00",
-  "animal": "Lion",
+  "generated_at": "2026-10-10T12:52:16+00:00",
+  "animal": "Gorilla",
   "region": "Africa",
-  "angle": "epic battles and rivals",
-  "title": "LION: Serengeti Clash of Kings | Ultimate Rivalries and Battles | Wildlife Documentary",
-  "description": "Witness the most intense showdowns and epic rivalries of the African lion on the Serengeti plains. From brutal territory clashes with rival males to eternal wars with spotted hyenas, discover what it takes to wear the crown.\n\nANIMAL: Lion \u2014 today's angle: epic battles and rivals.\nAll footage in this episode is REAL wildlife video, reused legally under Creative Commons / public-domain licenses from the sources listed below.\n\nCHAPTERS\n0:03  Welcome to the Serengeti\n0:59  Clash of the Titans\n1:44  ",
+  "angle": "hunting and feeding",
+  "title": "GORILLA: Silverback Showdown for Forest Feasts | Wildlife Documentary",
+  "description": "Witness the immense power of the silverback gorilla as he leads his troop through an intense daily feeding marathon in the dense African jungle. Discover how these gentle giants process dozens of pounds of rough vegetation while defending their territory against rival challengers. Join Animals Planet Space for an up-close look at the high-stakes foraging battles of the world's largest primate.\n\nANIMAL: Gorilla \u2014 today's angle: hunting and feeding.\nAll footage in this episode is REAL wildlife vid",
   "tags": [
     "wildlife",
     "animals",
@@ -14,100 +14,44 @@
     "wild animals",
     "nature documentary",
     "Animals Planet Space",
-    "lion",
-    "lion"
+    "gorilla",
+    "gorilla"
   ],
   "footage_sources": [
     {
       "provider": "commons",
-      "title": "Lion (Panthera leo).webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lion_(Panthera_leo).webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "title": "006 Mountain gorilla eating at Bwindi Impenetrable Forest National Park Video by Giles Laurent.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:006_Mountain_gorilla_eating_at_Bwindi_Impenetrable_Forest_National_Park_Video_by_Giles_Laurent.webm",
+      "license": "Wikimedia Commons (CC BY-SA 4.0)",
       "views": 0,
-      "seconds_used": 15.1
+      "seconds_used": 12.5
     },
     {
       "provider": "commons",
-      "title": "Lion (Panthera leo) walking on the road.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lion_(Panthera_leo)_walking_on_the_road.webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 64.9
-    },
-    {
-      "provider": "commons",
-      "title": "Lion cubs (Panthera leo).webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lion_cubs_(Panthera_leo).webm",
+      "title": "Silverback Gorilla Adores His Son So Much - The Shabani Group.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:Silverback_Gorilla_Adores_His_Son_So_Much_-_The_Shabani_Group.webm",
       "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
-      "seconds_used": 48.7
+      "seconds_used": 280.0
     },
     {
       "provider": "commons",
-      "title": "Lions (Panthera leo).webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lions_(Panthera_leo).webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
+      "title": "What Silverback Gorilla Wants To Do When He Feels Good - The Shabani Group.webm",
+      "url": "https://commons.wikimedia.org/wiki/File:What_Silverback_Gorilla_Wants_To_Do_When_He_Feels_Good_-_The_Shabani_Group.webm",
+      "license": "Wikimedia Commons (CC BY 3.0)",
       "views": 0,
-      "seconds_used": 28.2
-    },
-    {
-      "provider": "commons",
-      "title": "Lion (Panthera leo) sniffing at the ground.webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lion_(Panthera_leo)_sniffing_at_the_ground.webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 8.5
-    },
-    {
-      "provider": "commons",
-      "title": "Lions (Panthera leo) pride sleeping ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lions_(Panthera_leo)_pride_sleeping_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 24.5
-    },
-    {
-      "provider": "commons",
-      "title": "Lions (Panthera leo) on the move ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lions_(Panthera_leo)_on_the_move_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 28.3
-    },
-    {
-      "provider": "commons",
-      "title": "Lions (Panthera leo) pride ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lions_(Panthera_leo)_pride_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 36.8
-    },
-    {
-      "provider": "commons",
-      "title": "Lions (Panthera leo) couple mating ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lions_(Panthera_leo)_couple_mating_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 20.2
-    },
-    {
-      "provider": "commons",
-      "title": "Lions (Panthera leo) pair after mating ....webm",
-      "url": "https://commons.wikimedia.org/wiki/File:Lions_(Panthera_leo)_pair_after_mating_....webm",
-      "license": "Wikimedia Commons (CC BY-SA 2.0)",
-      "views": 0,
-      "seconds_used": 9.8
+      "seconds_used": 19.5
     }
   ],
-  "video_id": "LlzP0QpTg20",
-  "video_url": "https://youtu.be/LlzP0QpTg20",
-  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_09_1351.mp4",
-  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_09_1351_thumb.jpg",
-  "duration_seconds": 291.0,
-  "footage_seconds": 284.9,
-  "footage_ratio": 0.979,
-  "script_source": "gemini:gemini-3.5-flash",
-  "script_words": 967,
+  "video_id": "zYy8j5CN78U",
+  "video_url": "https://youtu.be/zYy8j5CN78U",
+  "video_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_10_1250.mp4",
+  "thumbnail_file": "/home/runner/work/Animals-Planet-Space/Animals-Planet-Space/output/animals_2026_10_10_1250_thumb.jpg",
+  "duration_seconds": 411.2,
+  "footage_seconds": 405.0,
+  "footage_ratio": 0.985,
+  "script_source": "gemini:gemini-3.7-flash",
+  "script_words": 1048,
   "qa_passed": true,
   "uploaded": true
 }
