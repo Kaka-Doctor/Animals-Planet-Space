@@ -120,7 +120,14 @@ def diagnose_auth() -> str:
 
 def find_open_alert() -> dict | None:
     code, data = gh("GET", f"/repos/{REPO}/issues?state=open&per_page=100")
-    for iss in data.get("issues" if isinstance(data, dict) else [], []) or []:
+    # GET /issues returns a JSON ARRAY on success, a dict on error.
+    if isinstance(data, list):
+        issues = data
+    elif isinstance(data, dict):
+        issues = data.get("issues", [])
+    else:
+        issues = []
+    for iss in issues:
         if isinstance(iss, dict) and iss.get("title") == ALERT_TITLE:
             return iss
     return None
@@ -223,4 +230,20 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception as e:
+        # The guard must never break the workflow — but if the guard ITSELF
+        # crashes, open an issue about that so the breakage is visible.
+        import traceback
+        err = f"{type(e).__name__}: {e}\n```\n{traceback.format_exc()[:1500]}\n```"
+        print("Health Guard crashed:", err)
+        try:
+            gh("POST", f"/repos/{REPO}/issues", {
+                "title": "CHANNEL ALERT — Health Guard itself crashed (needs a code fix)",
+                "body": f"The Health Guard script crashed and could NOT verify "
+                        f"the channel this run. Please check the workflow log "
+                        f"and fix scripts/health_guard.py.\n\n{err}"})
+        except Exception:
+            pass
+        sys.exit(0)
