@@ -1,0 +1,40 @@
+name: Channel Health Guard
+
+on:
+  schedule:
+    # Runs daily at 22:00 UTC (01:00 EAT), AFTER the 19:45 UTC backup slot
+    # has fully finished (worst case ~21:15). Checks the channel's PUBLIC
+    # RSS feed: if no upload in the last 15h (the channel posts 2x daily
+    # on a ~12h cadence), it diagnoses the OAuth token and opens/reopens
+    # an alert issue in this repo — you get an email notification. The
+    # issue auto-closes when posting resumes.
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+# issues:write -> open/close the alert issue. GITHUB_TOKEN suffices.
+permissions:
+  issues: write
+  contents: read
+
+concurrency:
+  group: health-guard
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Check the channel is still posting (RSS + OAuth diagnosis)
+        env:
+          CHANNEL_ID: "UCBWt_-yyKewuMcBn48XxaMw"
+          CHANNEL_HANDLE: "AnimalsPlanetSpace"
+          SILENT_HOURS: "15"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python3 scripts/health_guard.py
